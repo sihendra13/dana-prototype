@@ -24,13 +24,9 @@
 html,body{
   width:100%;height:100%;
   background:#F7F9FB;
-  display:flex;align-items:center;justify-content:center;
   font-family:'Plus Jakarta Sans',system-ui,sans-serif;
   overflow:hidden;
-}
-/* center column handles vertical layout */
-body > div:first-child {
-  display:flex;flex-direction:column;align-items:center;
+  margin:0;padding:0;
 }
 
 /* ── iPhone shell wrapper ── */
@@ -376,16 +372,16 @@ body > div:first-child {
 <body>
 
 <!-- ── SIDE-BY-SIDE LAYOUT ── -->
-<div style="display:flex;gap:40px;align-items:flex-start;justify-content:center;flex-wrap:wrap;max-width:1400px;margin:0 auto;">
+<!-- ── MAIN LAYOUT: phone kiri, buttons kanan ── -->
+<div style="width:100%;height:100vh;display:flex;align-items:center;justify-content:center;gap:48px;">
 
-<!-- LEFT: Phone + perspective chip ── -->
-<div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+<!-- LEFT: chip + phone -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px;flex:none;">
 
-<!-- ── perspective label chip ── -->
+<!-- chip di atas phone -->
 <div id="pov-chip" style="
   display:flex;align-items:center;gap:8px;
   background:#1A1D1F;
-  border:1px solid rgba(0,0,0,.15);
   border-radius:99px;
   padding:7px 16px;
   font-size:12px;font-weight:700;
@@ -1259,55 +1255,18 @@ body > div:first-child {
 </div><!-- LEFT: phone + chip -->
 
 <!-- RIGHT: Flow selector buttons (LARGE) ── -->
-<div style="display:flex;flex-direction:column;gap:18px;justify-content:center;padding:40px 20px;">
-  <div style="margin-bottom:12px;">
-    <div style="font-size:13px;font-weight:700;color:#666;letter-spacing:.05em;margin-bottom:16px;">Flow</div>
-  </div>
+<!-- RIGHT: Flow buttons -->
+<div style="flex:none;display:flex;flex-direction:column;gap:14px;justify-content:center;">
+  <div style="font-size:22px;font-weight:800;color:#333;margin-bottom:8px;">Flow</div>
 
-  <button onclick="switchFlow('rina')" id="btn-flow-rina" style="
-    padding:20px 24px;
-    border-radius:14px;
-    border:2.5px solid #1A9BE8;
-    background:#1A9BE8;
-    color:#fff;
-    font-size:16px;
-    font-weight:700;
-    cursor:pointer;
-    transition:all .2s;
-    text-align:center;
-    min-width:240px;
-  " onmouseover="this.background='#1683C7'" onmouseout="this.background='#1A9BE8'">Rina → Bu Sari</button>
+  <button onclick="switchFlow('rina')" id="btn-flow-rina" style="padding:18px 28px;border-radius:14px;border:2.5px solid #1A9BE8;background:#1A9BE8;color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;min-width:220px;text-align:left;">Rina → Bu Sari</button>
 
-  <button onclick="switchFlow('budi')" id="btn-flow-budi" style="
-    padding:20px 24px;
-    border-radius:14px;
-    border:2.5px solid rgba(26,155,232,.3);
-    background:transparent;
-    color:#1A9BE8;
-    font-size:16px;
-    font-weight:700;
-    cursor:pointer;
-    transition:all .2s;
-    text-align:center;
-    min-width:240px;
-  " onmouseover="this.borderColor='#1A9BE8'" onmouseout="this.borderColor='rgba(26,155,232,.3)'">Pak Budi (Soon)</button>
+  <button onclick="switchFlow('budi')" id="btn-flow-budi" style="padding:18px 28px;border-radius:14px;border:2.5px solid rgba(26,155,232,.35);background:#fff;color:#1A9BE8;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;min-width:220px;text-align:left;">Pak Budi (Soon)</button>
 
-  <button onclick="switchFlow('profile')" id="btn-flow-profile" style="
-    padding:20px 24px;
-    border-radius:14px;
-    border:2.5px solid rgba(26,155,232,.3);
-    background:transparent;
-    color:#1A9BE8;
-    font-size:16px;
-    font-weight:700;
-    cursor:pointer;
-    transition:all .2s;
-    text-align:center;
-    min-width:240px;
-  " onmouseover="this.borderColor='#1A9BE8'" onmouseout="this.borderColor='rgba(26,155,232,.3)'">My Referrals</button>
+  <button onclick="switchFlow('profile')" id="btn-flow-profile" style="padding:18px 28px;border-radius:14px;border:2.5px solid rgba(26,155,232,.35);background:#fff;color:#1A9BE8;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;min-width:220px;text-align:left;">My Referrals</button>
 </div>
 
-</div><!-- END SIDE-BY-SIDE LAYOUT -->
+</div><!-- END MAIN LAYOUT -->
 
 <!-- ── "Sementara itu di HP Rina" — fixed, positioned just below phone shell ── -->
 <div id="rina-hint" onclick="goTo('s4push')" style="
