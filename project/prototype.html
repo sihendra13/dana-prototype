@@ -1616,32 +1616,38 @@ html,body{
   <div class="screen hidden-right" id="sb-loading">
     <div class="topbar">
       <div class="statusbar"><span>9:41</span><span class="icons" id="sibloading"></span></div>
+      <div class="appbar">
+        <div class="center-title">Daftar DANA Bisnis</div>
+      </div>
+      <div style="height:3px;background:rgba(255,255,255,.25);overflow:hidden;">
+        <div id="budi-progress-bar" style="height:100%;background:#fff;width:0%;transition:width .4s ease;"></div>
+      </div>
     </div>
-    <div class="body" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;">
-      <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#1A9BE8,#0B6DAD);display:flex;align-items:center;justify-content:center;margin-bottom:20px;box-shadow:0 0 0 12px rgba(26,155,232,.1);">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
-      </div>
-      <div style="font-size:18px;font-weight:800;color:#1A1D1F;margin-bottom:6px;">Memproses pendaftaran...</div>
-      <div style="font-size:13px;color:#9AA1A9;font-weight:500;margin-bottom:32px;text-align:center;">Sedang memverifikasi data kamu</div>
+    <div class="body" style="align-items:center;justify-content:center;text-align:center;gap:0;">
+      <!-- spinner sama dengan sloading -->
+      <div style="width:72px;height:72px;border-radius:50%;border:4px solid var(--blue-tint);border-top-color:var(--blue);animation:spin 1s linear infinite;margin-bottom:28px;"></div>
+      <h2 style="font-size:20px;font-weight:800;color:var(--ink);margin:0 0 10px;line-height:1.3;">Mendaftarkan akun DANA Bisnis kamu…</h2>
+      <p style="font-size:14px;color:var(--muted);margin:0 0 36px;line-height:1.5;">Mohon tunggu sebentar</p>
 
-      <div style="width:100%;max-width:300px;margin-bottom:28px;">
-        <div style="background:#E8EAED;border-radius:99px;height:6px;overflow:hidden;">
-          <div id="budi-progress-bar" style="width:0%;height:100%;background:linear-gradient(90deg,#1A9BE8,#0B6DAD);border-radius:99px;transition:width .4s ease;"></div>
+      <!-- step progress -->
+      <div style="width:100%;display:flex;flex-direction:column;gap:14px;text-align:left;">
+        <div class="load-step" id="bstep1" style="display:flex;align-items:center;gap:12px;opacity:.35;">
+          <div class="lstep-ico" style="width:32px;height:32px;border-radius:50%;background:var(--field);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#9AA1A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:14px;font-weight:600;color:var(--ink);">Memverifikasi identitas</span>
         </div>
-      </div>
-
-      <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px;">
-        <div id="bstep1" style="display:flex;align-items:center;gap:12px;opacity:.35;transition:opacity .4s;">
-          <div class="lstep-ico" style="width:28px;height:28px;border-radius:50%;background:var(--field);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;"></div>
-          <span style="font-size:13px;font-weight:600;color:var(--ink);">Verifikasi data usaha</span>
+        <div class="load-step" id="bstep2" style="display:flex;align-items:center;gap:12px;opacity:.35;">
+          <div class="lstep-ico" style="width:32px;height:32px;border-radius:50%;background:var(--field);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#9AA1A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:14px;font-weight:600;color:var(--ink);">Membuat akun DANA Bisnis</span>
         </div>
-        <div id="bstep2" style="display:flex;align-items:center;gap:12px;opacity:.35;transition:opacity .4s;">
-          <div class="lstep-ico" style="width:28px;height:28px;border-radius:50%;background:var(--field);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;"></div>
-          <span style="font-size:13px;font-weight:600;color:var(--ink);">Verifikasi KTP & selfie</span>
-        </div>
-        <div id="bstep3" style="display:flex;align-items:center;gap:12px;opacity:.35;transition:opacity .4s;">
-          <div class="lstep-ico" style="width:28px;height:28px;border-radius:50%;background:var(--field);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;"></div>
-          <span style="font-size:13px;font-weight:600;color:var(--ink);">Mengaktifkan QRIS</span>
+        <div class="load-step" id="bstep3" style="display:flex;align-items:center;gap:12px;opacity:.35;">
+          <div class="lstep-ico" style="width:32px;height:32px;border-radius:50%;background:var(--field);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#9AA1A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:14px;font-weight:600;color:var(--ink);">Mengaktifkan QRIS</span>
         </div>
       </div>
     </div>
