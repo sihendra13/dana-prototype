@@ -509,11 +509,12 @@ html,body{
       <div class="divider"></div>
       <div class="choose-lbl">Pilih cara berbagi</div>
       <div class="share-row">
-        <div class="share-btn" onclick="goTo('s2a')">
+        <div class="share-btn" id="btn-wa-share" onclick="if(currentFlow!=='budi') goTo('s2a');">
           <div class="sico" id="ico-wa"></div>
           <div class="st">Kirim via WhatsApp</div>
           <div class="ss">Link + pesan otomatis</div>
         </div>
+
         <div class="share-btn" onclick="goTo('s2b')">
           <div class="sico" id="ico-qr"></div>
           <div class="st">Tampilkan QR Code</div>
@@ -611,8 +612,9 @@ html,body{
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v11m0 0l-4-4m4 4l4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
             Simpan ke Galeri
           </button>
-          <button class="btn btn-o" id="btn-scan-demo" style="display:none;" onclick="showBudiTransition()">
-            👆 Pak Eko sudah scan QR → Lanjut
+          <button class="btn btn-o">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 8V4h10v4" stroke="#1A9BE8" stroke-width="1.9" stroke-linejoin="round"/><rect x="4" y="8" width="16" height="9" rx="2" stroke="#1A9BE8" stroke-width="1.9"/><rect x="7.5" y="14" width="9" height="6" rx="1" stroke="#1A9BE8" stroke-width="1.9"/><circle cx="16.5" cy="11" r="1" fill="#1A9BE8"/></svg>
+            Cetak QR Code
           </button>
         </div>
       </div>
@@ -1724,6 +1726,24 @@ html,body{
   white-space:nowrap;
 "></div>
 
+<!-- ── Budi hint: "Pak Eko sudah scan QR" — below phone ── -->
+<div id="budi-hint" onclick="showBudiTransition()" style="
+  display:none;
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:500;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  white-space:nowrap;
+">
+  <div style="display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border-radius:99px;border:1.5px solid rgba(255,152,0,.4);background:#fff;box-shadow:0 4px 20px rgba(255,152,0,.2);">
+    <span style="font-size:17px;animation:blink 1.4s infinite;">📷</span>
+    <span style="font-size:13px;font-weight:700;color:#FF9800;letter-spacing:.01em;">Pak Eko sudah scan QR…</span>
+    <span style="font-size:12px;color:#FFB74D;font-weight:500;animation:blink 1.4s infinite;">tap →</span>
+  </div>
+</div>
+
 </div><!-- /center column -->
 
 <!-- ══ Interstitial Transition Overlay ══ -->
@@ -2027,29 +2047,43 @@ function getPOV(id){
 // ── flow tracking ──
 let currentFlow = 'rina';
 
-// ── rina-hint visibility + positioning ──
-function updateRinaHint(id){
-  const hint = document.getElementById('rina-hint');
-  if(id !== 's8'){ hint.style.display = 'none'; return; }
-
-  // position hint just below the phone shell
-  hint.innerHTML = `
-    <div style="display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border-radius:99px;border:1.5px solid rgba(26,155,232,.35);background:#fff;box-shadow:0 4px 20px rgba(26,155,232,.2);">
-      <span style="font-size:17px;animation:blink 1.4s infinite;">🔔</span>
-      <span style="font-size:13px;font-weight:700;color:#1A9BE8;letter-spacing:.01em;">Sementara itu di HP Rina…</span>
-      <span style="font-size:12px;color:#8ABFD4;font-weight:500;animation:blink 1.4s infinite;">tap →</span>
-    </div>`;
-  hint.style.display = 'block';
-
-  // position hint BELOW the iPhone shell (phone-wrap)
+// ── hint positioning helper ──
+function positionHintBelow(el){
   const wrap = document.querySelector('.phone-wrap');
   if(wrap){
     const wr = wrap.getBoundingClientRect();
-    const hintH = 50; // approx hint height
+    const hintH = 50;
     const gap = 14;
-    // bottom css = viewport_h - (phone_wrap_bottom + hintH + gap)
     const bottomCss = window.innerHeight - (wr.bottom + hintH + gap);
-    hint.style.bottom = Math.max(bottomCss, 6) + 'px';
+    el.style.bottom = Math.max(bottomCss, 6) + 'px';
+  }
+}
+
+// ── rina-hint visibility + positioning ──
+function updateRinaHint(id){
+  const hint = document.getElementById('rina-hint');
+  const budiHint = document.getElementById('budi-hint');
+
+  // hide both first
+  hint.style.display = 'none';
+  budiHint.style.display = 'none';
+
+  // Rina hint: shows after Bu Sari success (s8)
+  if(id === 's8' && currentFlow === 'rina'){
+    hint.innerHTML = `
+      <div style="display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border-radius:99px;border:1.5px solid rgba(26,155,232,.35);background:#fff;box-shadow:0 4px 20px rgba(26,155,232,.2);">
+        <span style="font-size:17px;animation:blink 1.4s infinite;">🔔</span>
+        <span style="font-size:13px;font-weight:700;color:#1A9BE8;letter-spacing:.01em;">Sementara itu di HP Rina…</span>
+        <span style="font-size:12px;color:#8ABFD4;font-weight:500;animation:blink 1.4s infinite;">tap →</span>
+      </div>`;
+    hint.style.display = 'block';
+    positionHintBelow(hint);
+  }
+
+  // Budi hint: shows on s2b in budi flow
+  if(id === 's2b' && currentFlow === 'budi'){
+    budiHint.style.display = 'block';
+    positionHintBelow(budiHint);
   }
 }
 
@@ -2118,13 +2152,11 @@ function goTo(id){
   stack.push(id);
   updatePOV(id);
   updateRinaHint(id);
-  // Show scan button on s2b when in budi flow
-  if(id === 's2b' && currentFlow === 'budi'){
+  // Update QR label based on flow
+  if(id === 's2b'){
     setTimeout(()=>{
-      const btn = document.getElementById('btn-scan-demo');
-      if(btn) btn.style.display = 'flex';
       const lbl = document.getElementById('qr-code-label');
-      if(lbl) lbl.textContent = 'BUDI123';
+      if(lbl) lbl.textContent = currentFlow === 'budi' ? 'BUDI123' : 'RINA123';
     }, 300);
   }
 }
@@ -2375,22 +2407,16 @@ function switchFlow(flowName){
   // navigate
   if(flowName === 'rina'){
     jumpTo('s0');
-    // Reset QR screen untuk Rina
     setTimeout(()=>{
       const lbl = document.getElementById('qr-code-label');
       if(lbl) lbl.textContent = 'RINA123';
-      const btn = document.getElementById('btn-scan-demo');
-      if(btn) btn.style.display = 'none';
     }, 100);
   }
   else if(flowName === 'budi'){
     jumpTo('s0');
-    // Update QR screen untuk Pak Budi
     setTimeout(() => {
       const lbl = document.getElementById('qr-code-label');
       if(lbl) lbl.textContent = 'BUDI123';
-      const btn = document.getElementById('btn-scan-demo');
-      if(btn) btn.style.display = 'flex';
     }, 100);
   }
   else if(flowName === 'profile') jumpTo('s-profile');
