@@ -880,6 +880,8 @@ html,body{
         <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
       </div>
     </div>
+    <!-- hotspot: Bu Sari tap "Daftar sekarang" link di WA bubble -->
+    <div class="hotspot" style="position:absolute;left:20px;top:330px;width:300px;height:110px;border-radius:12px;" onclick="goTo('s5')"></div>
   </div><!-- /swa -->
 
   <!-- ════════════════════════════
@@ -1748,20 +1750,18 @@ html,body{
 "></div>
 
 <!-- ── Swa hint: "Bu Sari tap link" — below phone ── -->
-<div id="swa-hint" onclick="goTo('s5')" style="
+<div id="swa-hint" style="
   display:none;
   position:fixed;
   left:50%;
   transform:translateX(-50%);
   z-index:500;
-  cursor:pointer;
-  -webkit-tap-highlight-color:transparent;
+  pointer-events:none;
   white-space:nowrap;
 ">
   <div style="display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border-radius:99px;border:1.5px solid rgba(26,155,232,.35);background:#fff;box-shadow:0 4px 20px rgba(26,155,232,.2);">
     <span style="font-size:17px;animation:blink 1.4s infinite;">👆</span>
     <span style="font-size:13px;font-weight:700;color:#1A9BE8;letter-spacing:.01em;">Bu Sari tap link di atas untuk daftar…</span>
-    <span style="font-size:12px;color:#8ABFD4;font-weight:500;animation:blink 1.4s infinite;">tap →</span>
   </div>
 </div>
 
