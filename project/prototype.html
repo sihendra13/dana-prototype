@@ -1248,6 +1248,363 @@ html,body{
     </div>
   </div><!-- /s3 -->
 
+  <!-- ════════════════════════════
+       SB0 — PAK BUDI HOME (QR Entry)
+  ════════════════════════════ -->
+  <div class="screen hidden-right" id="sb0">
+    <div class="topbar">
+      <div class="statusbar"><span>9:41</span><span class="icons" id="sib0"></span></div>
+      <div class="appbar">
+        <div class="back-btn" onclick="goBack()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="center-title">QRISin Saja</div>
+      </div>
+    </div>
+    <div class="body" style="padding:20px;">
+      <div style="text-align:center;margin-bottom:20px;">
+        <div style="font-size:18px;font-weight:800;color:#1A1D1F;margin-bottom:6px;">Ajak pedagang, dapat reward!</div>
+        <div style="font-size:13px;color:#666;font-weight:500;">Minta pedagang scan QR code kamu di bawah ini</div>
+      </div>
+
+      <!-- QR Card -->
+      <div style="background:#fff;border:1.5px solid #E8EAED;border-radius:20px;padding:24px 20px;margin-bottom:20px;box-shadow:0 4px 24px rgba(0,0,0,.06);">
+        <div style="text-align:center;margin-bottom:16px;">
+          <div style="font-size:12px;font-weight:600;color:#999;letter-spacing:.05em;margin-bottom:4px;">QR REFERRAL KAMU</div>
+          <div style="font-size:14px;font-weight:700;color:#1A1D1F;">Pak Budi</div>
+        </div>
+
+        <!-- QR Visual -->
+        <div style="display:flex;justify-content:center;margin-bottom:16px;">
+          <div style="width:180px;height:180px;border:2.5px solid #1A9BE8;border-radius:16px;padding:12px;background:#fff;box-shadow:0 4px 16px rgba(26,155,232,.15);">
+            <canvas id="qr-budi" width="200" height="200" style="width:100%;height:100%;display:block;border-radius:4px;"></canvas>
+          </div>
+        </div>
+
+        <!-- Reward info -->
+        <div style="background:#EAF6FE;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:11px;color:#666;font-weight:600;">Kamu dapat</div>
+            <div style="font-size:18px;font-weight:800;color:#1A9BE8;">Rp25.000</div>
+          </div>
+          <div style="width:1px;height:36px;background:#C5E4F7;"></div>
+          <div>
+            <div style="font-size:11px;color:#666;font-weight:600;">Pedagang dapat</div>
+            <div style="font-size:18px;font-weight:800;color:#1A9BE8;">QRIS + Rp40.000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- How to use -->
+      <div style="background:#F7F9FB;border-radius:14px;padding:14px 16px;margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:700;color:#1A1D1F;margin-bottom:10px;">Cara pakai:</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="width:20px;height:20px;border-radius:50%;background:#1A9BE8;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;">1</div>
+            <div style="font-size:12px;color:#444;font-weight:500;">Tunjukkan QR code ini ke pedagang yang ingin kamu ajak</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="width:20px;height:20px;border-radius:50%;background:#1A9BE8;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;">2</div>
+            <div style="font-size:12px;color:#444;font-weight:500;">Pedagang scan QR → download DANA → daftar dalam 5 menit</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="width:20px;height:20px;border-radius:50%;background:#1A9BE8;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;">3</div>
+            <div style="font-size:12px;color:#444;font-weight:500;">Reward masuk ke saldo DANA kamu otomatis</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-stack">
+        <button class="btn btn-p" onclick="goTo('sb1')">Pedagang Scan Sekarang →</button>
+      </div>
+    </div>
+  </div><!-- /sb0 -->
+
+  <!-- ════════════════════════════
+       SB1 — PAK EKO: SCAN QR / PLAY STORE
+  ════════════════════════════ -->
+  <div class="screen hidden-right" id="sb1">
+    <div style="position:relative;width:390px;height:844px;flex:none;overflow:hidden;">
+      <img src="assets/dana app.jpeg" alt="Play Store DANA" draggable="false"
+           style="width:390px;height:844px;object-fit:cover;object-position:top;display:block;">
+      <!-- hotspot: tombol Install -->
+      <div class="hotspot" style="left:270px;top:150px;width:120px;height:60px;" onclick="goTo('sb2');setTimeout(startInstall,400);"></div>
+    </div>
+  </div><!-- /sb1 -->
+
+  <!-- ════════════════════════════
+       SB2 — DOWNLOADING / INSTALLING
+  ════════════════════════════ -->
+  <div class="screen hidden-right" id="sb2">
+    <div class="topbar">
+      <div class="statusbar"><span>9:41</span><span class="icons" id="sib2"></span></div>
+    </div>
+    <div class="body" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:40px 24px;">
+
+      <!-- DANA icon -->
+      <div style="width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#1A9BE8,#0B6DAD);display:flex;align-items:center;justify-content:center;margin-bottom:20px;box-shadow:0 8px 24px rgba(26,155,232,.35);">
+        <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="rgba(255,255,255,0.15)"/><text x="24" y="32" text-anchor="middle" font-size="20" font-weight="900" fill="#fff" font-family="sans-serif">D</text></svg>
+      </div>
+
+      <div style="font-size:18px;font-weight:800;color:#1A1D1F;margin-bottom:6px;">Menginstal DANA...</div>
+      <div style="font-size:13px;color:#9AA1A9;font-weight:500;margin-bottom:32px;">Mohon tunggu sebentar</div>
+
+      <!-- Progress bar -->
+      <div style="width:100%;max-width:280px;margin-bottom:12px;">
+        <div style="background:#E8EAED;border-radius:99px;height:8px;overflow:hidden;">
+          <div id="install-bar" style="height:100%;background:linear-gradient(90deg,#1A9BE8,#0B6DAD);border-radius:99px;width:0%;transition:width .4s ease;"></div>
+        </div>
+      </div>
+      <div id="install-pct" style="font-size:13px;font-weight:700;color:#1A9BE8;">0%</div>
+
+      <div style="margin-top:40px;font-size:12px;color:#B0B7C0;font-weight:500;text-align:center;">
+        DANA – #BukanDompetBiasa<br>56 MB · PT Espay Debit Indonesia
+      </div>
+    </div>
+  </div><!-- /sb2 -->
+
+  <!-- ════════════════════════════
+       SB3 — LANDING (PAK EKO)
+  ════════════════════════════ -->
+  <div class="screen hidden-right" id="sb3">
+    <div class="topbar">
+      <div class="statusbar"><span>9:41</span><span class="icons" id="sib3"></span></div>
+      <div class="appbar" style="background:#fff;border-bottom:1px solid #E8EAED;">
+        <div style="display:flex;align-items:center;gap:10px;padding:0 8px;">
+          <div style="width:28px;height:28px;border-radius:8px;background:#1A9BE8;display:flex;align-items:center;justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#fff"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="#fff"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill="#fff"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#fff"/></svg>
+          </div>
+          <div style="font-size:14px;font-weight:700;color:#1A1D1F;">QRISin Saja</div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <!-- Hero -->
+      <div style="background:linear-gradient(135deg,#1A9BE8 0%,#0B6DAD 100%);margin:-20px -20px 20px;padding:28px 20px 24px;">
+        <div style="background:rgba(255,255,255,.15);border-radius:99px;padding:5px 12px;display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;">
+          <svg width="13" height="13" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          <span style="font-size:11px;font-weight:700;color:#fff;">Pak Budi mengajakmu bergabung</span>
+        </div>
+        <h2 style="font-size:22px;font-weight:800;color:#fff;line-height:1.25;margin:0 0 8px;">Warungmu bisa terima<br>pembayaran non tunai, gratis!</h2>
+        <p style="font-size:13px;color:rgba(255,255,255,.8);margin:0;font-weight:500;">Daftar DANA Bisnis sekarang. 5 menit selesai.</p>
+      </div>
+
+      <!-- Benefits -->
+      <div style="margin-bottom:20px;">
+        <div style="font-size:13px;font-weight:700;color:#1A1D1F;margin-bottom:14px;">Yang kamu dapat:</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:#EAF6FE;display:flex;align-items:center;justify-content:center;flex:none;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#1A9BE8"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="#1A9BE8"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill="#1A9BE8"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#1A9BE8"/></svg>
+            </div>
+            <span style="font-size:14px;font-weight:500;color:#1A1D1F;">QRIS sendiri, <b>gratis</b></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:#EAF6FE;display:flex;align-items:center;justify-content:center;flex:none;">
+              <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#1A9BE8"/><text x="12" y="15.8" text-anchor="middle" font-size="9" font-weight="800" fill="#fff" font-family="sans-serif">Rp</text></svg>
+            </div>
+            <span style="font-size:14px;font-weight:500;color:#1A1D1F;">Saldo DANA <b>Rp15.000</b> begitu akun aktif</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:#EAF6FE;display:flex;align-items:center;justify-content:center;flex:none;">
+              <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#1A9BE8"/><text x="12" y="15.8" text-anchor="middle" font-size="9" font-weight="800" fill="#fff" font-family="sans-serif">Rp</text></svg>
+            </div>
+            <span style="font-size:14px;font-weight:500;color:#1A1D1F;">Saldo DANA <b>Rp25.000</b> lagi setelah 3 transaksi</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-stack">
+        <button class="btn btn-p" onclick="goTo('sb4')">Daftar Sekarang, Gratis</button>
+      </div>
+    </div>
+  </div><!-- /sb3 -->
+
+  <!-- ════════════════════════════
+       SB4 — FORM (PAK EKO)
+  ════════════════════════════ -->
+  <div class="screen hidden-right" id="sb4">
+    <div class="topbar">
+      <div class="statusbar"><span>9:41</span><span class="icons" id="sib4"></span></div>
+      <div class="appbar lr">
+        <div class="back-btn" onclick="goBack()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="center-title" style="font-size:15px;font-weight:700;flex:1;padding:0 8px;">Data Usaha</div>
+        <span style="font-size:13px;font-weight:700;opacity:.75;">1 / 2</span>
+      </div>
+      <div style="height:3px;background:rgba(255,255,255,.25);"><div style="width:50%;height:100%;background:#fff;"></div></div>
+    </div>
+    <div class="body">
+      <p style="font-size:16px;font-weight:800;color:var(--ink);margin:0 0 4px;">Isi data warungmu</p>
+      <p style="font-size:13px;color:var(--muted);margin:0 0 20px;">Semua data akan diverifikasi oleh DANA</p>
+
+      <div class="field-group">
+        <label class="field-label">Nama warung / usaha</label>
+        <div class="field-input">Warung Pak Eko</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Kategori usaha</label>
+        <div class="field-input field-select">Warung / Sembako</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Nomor HP</label>
+        <div class="field-input">0812-xxxx-xxxx</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Alamat usaha</label>
+        <div class="field-input">Jl. Pasar Baru No. 12, Jakarta</div>
+      </div>
+      <div class="btn-stack">
+        <button class="btn btn-p" onclick="goTo('sb5')">Lanjut →</button>
+      </div>
+    </div>
+  </div><!-- /sb4 -->
+
+  <!-- ════════════════════════════
+       SB5 — KYC (PAK EKO)
+  ════════════════════════════ -->
+  <div class="screen hidden-right" id="sb5">
+    <div class="topbar">
+      <div class="statusbar"><span>9:41</span><span class="icons" id="sib5"></span></div>
+      <div class="appbar lr">
+        <div class="back-btn" onclick="goBack()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="center-title" style="font-size:15px;font-weight:700;flex:1;padding:0 8px;">Verifikasi Identitas</div>
+        <span style="font-size:13px;font-weight:700;opacity:.75;">2 / 2</span>
+      </div>
+      <div style="height:3px;background:rgba(255,255,255,.25);"><div style="width:100%;height:100%;background:#fff;"></div></div>
+    </div>
+    <div class="body">
+      <p style="font-size:14px;font-weight:700;color:var(--ink);margin:0 0 12px;">Foto KTP kamu</p>
+      <div style="position:relative;background:var(--field);border:2px solid #1A9BE8;border-radius:14px;padding:50px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;margin-bottom:14px;min-height:200px;overflow:hidden;">
+        <div style="position:absolute;top:12px;left:12px;width:20px;height:20px;border-top:3px solid #1A9BE8;border-left:3px solid #1A9BE8;border-radius:2px;"></div>
+        <div style="position:absolute;top:12px;right:12px;width:20px;height:20px;border-top:3px solid #1A9BE8;border-right:3px solid #1A9BE8;border-radius:2px;"></div>
+        <div style="position:absolute;bottom:12px;left:12px;width:20px;height:20px;border-bottom:3px solid #1A9BE8;border-left:3px solid #1A9BE8;border-radius:2px;"></div>
+        <div style="position:absolute;bottom:12px;right:12px;width:20px;height:20px;border-bottom:3px solid #1A9BE8;border-right:3px solid #1A9BE8;border-radius:2px;"></div>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2.5" stroke="#1A9BE8" stroke-width="1.6"/><circle cx="8.5" cy="11" r="2.2" stroke="#1A9BE8" stroke-width="1.5"/><path d="M13 9.5h5M13 12.5h5M6.5 15.5h11" stroke="#1A9BE8" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div style="text-align:center;">
+          <div style="font-size:15px;color:#1A9BE8;font-weight:700;margin-bottom:4px;">Tap untuk ambil foto KTP</div>
+          <div style="font-size:12px;color:#666;font-weight:500;">Atau upload dari galeri</div>
+        </div>
+      </div>
+      <div style="background:#EAF6FE;border-radius:10px;padding:12px;display:flex;gap:9px;margin-bottom:20px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex:none;margin-top:2px"><path d="M9 18h6M10 21h4" stroke="#1A9BE8" stroke-width="1.7" stroke-linecap="round"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2h5c0-.8.4-1.5 1-2A6 6 0 0 0 12 3Z" stroke="#1A9BE8" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        <div>
+          <p style="margin:0;font-size:12px;color:#1A9BE8;line-height:1.5;font-weight:600;margin-bottom:4px;">✓ Pastikan keempat sudut KTP terlihat</p>
+          <p style="margin:0;font-size:12px;color:#1A9BE8;line-height:1.5;font-weight:500;">✓ Tulisan terbaca jelas, tidak blur atau bayangan</p>
+        </div>
+      </div>
+
+      <p style="font-size:14px;font-weight:700;color:var(--ink);margin:0 0 12px;">Foto selfie sambil pegang KTP</p>
+      <div style="background:var(--field);border:2px solid #1A9BE8;border-radius:14px;padding:50px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;margin-bottom:14px;min-height:200px;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M4 8.5h3l1.4-2h7.2L17 8.5h3a1.5 1.5 0 0 1 1.5 1.5v7A1.5 1.5 0 0 1 20 18.5H4A1.5 1.5 0 0 1 2.5 17v-7A1.5 1.5 0 0 1 4 8.5Z" stroke="#1A9BE8" stroke-width="1.5" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.2" stroke="#1A9BE8" stroke-width="1.5"/></svg>
+        <div style="text-align:center;">
+          <div style="font-size:15px;color:#1A9BE8;font-weight:700;margin-bottom:4px;">Tap untuk ambil selfie</div>
+          <div style="font-size:12px;color:#666;font-weight:500;">Atau upload dari galeri</div>
+        </div>
+      </div>
+      <div style="background:#EAF6FE;border-radius:10px;padding:12px;display:flex;gap:9px;margin-bottom:auto;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex:none;margin-top:2px"><path d="M9 18h6M10 21h4" stroke="#1A9BE8" stroke-width="1.7" stroke-linecap="round"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2h5c0-.8.4-1.5 1-2A6 6 0 0 0 12 3Z" stroke="#1A9BE8" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        <div>
+          <p style="margin:0;font-size:12px;color:#1A9BE8;line-height:1.5;font-weight:600;margin-bottom:4px;">✓ Wajah dan KTP jelas dalam satu foto</p>
+          <p style="margin:0;font-size:12px;color:#1A9BE8;line-height:1.5;font-weight:500;">✓ Pencahayaan cukup, tidak blur atau terpotong</p>
+        </div>
+      </div>
+      <div class="btn-stack">
+        <button class="btn btn-p" onclick="goTo('sb-loading');setTimeout(startBudiLoading,300);">Selesaikan Pendaftaran</button>
+      </div>
+    </div>
+  </div><!-- /sb5 -->
+
+  <!-- ════════════════════════════
+       SB-LOADING (PAK EKO)
+  ════════════════════════════ -->
+  <div class="screen hidden-right" id="sb-loading">
+    <div class="topbar">
+      <div class="statusbar"><span>9:41</span><span class="icons" id="sibloading"></span></div>
+    </div>
+    <div class="body" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;">
+      <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#1A9BE8,#0B6DAD);display:flex;align-items:center;justify-content:center;margin-bottom:20px;box-shadow:0 0 0 12px rgba(26,155,232,.1);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </div>
+      <div style="font-size:18px;font-weight:800;color:#1A1D1F;margin-bottom:6px;">Memproses pendaftaran...</div>
+      <div style="font-size:13px;color:#9AA1A9;font-weight:500;margin-bottom:32px;text-align:center;">Sedang memverifikasi data kamu</div>
+
+      <div style="width:100%;max-width:300px;margin-bottom:28px;">
+        <div style="background:#E8EAED;border-radius:99px;height:6px;overflow:hidden;">
+          <div id="budi-progress-bar" style="width:0%;height:100%;background:linear-gradient(90deg,#1A9BE8,#0B6DAD);border-radius:99px;transition:width .4s ease;"></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px;">
+        <div id="bstep1" style="display:flex;align-items:center;gap:12px;opacity:.35;transition:opacity .4s;">
+          <div class="lstep-ico" style="width:28px;height:28px;border-radius:50%;background:var(--field);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;"></div>
+          <span style="font-size:13px;font-weight:600;color:var(--ink);">Verifikasi data usaha</span>
+        </div>
+        <div id="bstep2" style="display:flex;align-items:center;gap:12px;opacity:.35;transition:opacity .4s;">
+          <div class="lstep-ico" style="width:28px;height:28px;border-radius:50%;background:var(--field);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;"></div>
+          <span style="font-size:13px;font-weight:600;color:var(--ink);">Verifikasi KTP & selfie</span>
+        </div>
+        <div id="bstep3" style="display:flex;align-items:center;gap:12px;opacity:.35;transition:opacity .4s;">
+          <div class="lstep-ico" style="width:28px;height:28px;border-radius:50%;background:var(--field);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;"></div>
+          <span style="font-size:13px;font-weight:600;color:var(--ink);">Mengaktifkan QRIS</span>
+        </div>
+      </div>
+    </div>
+  </div><!-- /sb-loading -->
+
+  <!-- ════════════════════════════
+       SB6 — SELESAI (PAK EKO)
+  ════════════════════════════ -->
+  <div class="screen hidden-right" id="sb6">
+    <div class="topbar">
+      <div class="statusbar"><span>9:41</span><span class="icons" id="sib6"></span></div>
+    </div>
+    <div style="background:linear-gradient(160deg,#1A9BE8 0%,#0B6DAD 100%);padding:32px 20px 28px;display:flex;flex-direction:column;align-items:center;flex:none;">
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 0 0 12px rgba(255,255,255,.08);">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2 style="font-size:20px;font-weight:800;color:#fff;text-align:center;line-height:1.3;margin:0 0 8px;">Selamat, Pak Eko!<br>Warungmu sudah bisa terima QRIS!</h2>
+      <p style="font-size:13px;color:rgba(255,255,255,.8);text-align:center;margin:0;font-weight:500;">QRIS kamu sudah aktif dan siap dipakai.</p>
+    </div>
+    <div class="body">
+      <!-- reward card -->
+      <div style="border:1px solid #FFE082;border-radius:16px;padding:14px 16px;background:#FFFDE7;display:flex;align-items:center;gap:13px;margin-bottom:14px;">
+        <div style="width:42px;height:42px;border-radius:50%;background:#FBC02D;display:flex;align-items:center;justify-content:center;flex:none;">
+          <svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#fff"/><text x="12" y="15.8" text-anchor="middle" font-size="9" font-weight="800" fill="#F9A825" font-family="sans-serif">Rp</text></svg>
+        </div>
+        <div>
+          <div style="font-size:11.5px;color:#7A5200;font-weight:600;margin-bottom:2px;">Reward masuk ke saldo DANA</div>
+          <div style="font-size:22px;font-weight:800;color:#F9A825;letter-spacing:-.02em;">Rp15.000</div>
+          <div style="font-size:11px;color:#A07000;margin-top:2px;font-weight:500;">dari program DANA QRISin Saja</div>
+        </div>
+      </div>
+
+      <!-- QRIS card -->
+      <div style="border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff;margin-bottom:14px;">
+        <div style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:14px;">QRIS kamu sudah siap</div>
+        <div style="display:flex;justify-content:center;">
+          <div style="width:140px;height:140px;border:2px solid var(--blue);border-radius:16px;padding:10px;box-shadow:0 8px 20px -12px rgba(26,155,232,.5);">
+            <canvas id="qr-sb6" width="200" height="200" style="width:100%;height:100%;display:block;border-radius:4px;"></canvas>
+          </div>
+        </div>
+        <div style="text-align:center;font-size:14px;font-weight:800;letter-spacing:.1em;margin:12px 0 4px;">WARUNG PAK EKO</div>
+        <div style="text-align:center;font-size:11px;color:var(--muted);font-weight:500;">Scan untuk bayar</div>
+      </div>
+
+      <!-- Notif Pak Budi dapat reward -->
+      <div style="border:1px solid #D4E8F7;border-radius:14px;padding:13px 14px;background:#EAF6FE;display:flex;align-items:center;gap:12px;">
+        <span style="font-size:20px;flex:none;">🔔</span>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#0B6DAD;margin-bottom:2px;">Notifikasi ke Pak Budi</div>
+          <div style="font-size:12px;color:#1A9BE8;font-weight:500;">Pak Eko berhasil daftar! Rp5.000 masuk ke saldo DANA Pak Budi</div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /sb6 -->
+
 </div><!-- /proto-shell -->
 
 </div><!-- /phone-wrap -->
@@ -1261,7 +1618,7 @@ html,body{
 
   <button onclick="switchFlow('rina')" id="btn-flow-rina" style="padding:18px 28px;border-radius:14px;border:2.5px solid #1A9BE8;background:#1A9BE8;color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;min-width:220px;text-align:left;">Rina → Bu Sari</button>
 
-  <button onclick="switchFlow('budi')" id="btn-flow-budi" style="padding:18px 28px;border-radius:14px;border:2.5px solid rgba(26,155,232,.35);background:#fff;color:#1A9BE8;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;min-width:220px;text-align:left;">Pak Budi (Soon)</button>
+  <button onclick="switchFlow('budi')" id="btn-flow-budi" style="padding:18px 28px;border-radius:14px;border:2.5px solid rgba(26,155,232,.35);background:#fff;color:#1A9BE8;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;min-width:220px;text-align:left;">Pak Budi → Pak Eko</button>
 
   <button onclick="switchFlow('profile')" id="btn-flow-profile" style="padding:18px 28px;border-radius:14px;border:2.5px solid rgba(26,155,232,.35);background:#fff;color:#1A9BE8;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;min-width:220px;text-align:left;">My Referrals</button>
 </div>
@@ -1435,7 +1792,8 @@ const POV = {
   s0:'hendra', s2:'hendra', s2a:'hendra', s2b:'hendra', s4:'hendra', s4push:'hendra',
   's-profile':'hendra', s3:'hendra',
   'stransit':'transition',
-  swa:'busari', s5:'busari', s6:'busari', s7:'busari', sloading:'busari', s8:'busari'
+  swa:'busari', s5:'busari', s6:'busari', s7:'busari', sloading:'busari', s8:'busari',
+  sb0:'budi', sb1:'eko', sb2:'eko', sb3:'eko', sb4:'eko', sb5:'eko', 'sb-loading':'eko', sb6:'eko'
 };
 
 // ── flow tracking ──
@@ -1483,6 +1841,12 @@ function updatePOV(id){
   } else if(pov === 'transition'){
     txt.textContent      = '✉️ Pesan dalam perjalanan…';
     dot.style.background = '#FFC107';
+  } else if(pov === 'budi'){
+    txt.textContent      = '🏪 Perspektif Pak Budi';
+    dot.style.background = '#FF9800';
+  } else if(pov === 'eko'){
+    txt.textContent      = '🛒 Perspektif Pak Eko';
+    dot.style.background = '#9C27B0';
   } else {
     txt.textContent      = '📱 Perspektif Rina';
     dot.style.background = '#1A9BE8';
@@ -1549,6 +1913,100 @@ function jumpTo(id){
   updatePOV(id);
   updateRinaHint(id);
 }
+
+// ── Install animation (sb2) ──
+function startInstall(){
+  const bar = document.getElementById('install-bar');
+  const pct = document.getElementById('install-pct');
+  if(!bar) return;
+  let progress = 0;
+  const ticks = [
+    {p:30, t:600}, {p:55, t:1200}, {p:78, t:2000}, {p:92, t:2800}, {p:100, t:3400}
+  ];
+  ticks.forEach(({p, t}) => {
+    setTimeout(() => {
+      if(bar){ bar.style.width = p + '%'; }
+      if(pct){ pct.textContent = p + '%'; }
+      if(p === 100){
+        setTimeout(() => goTo('sb3'), 500);
+      }
+    }, t);
+  });
+}
+
+// ── Pak Budi flow loading animation ──
+function startBudiLoading(){
+  const bar = document.getElementById('budi-progress-bar');
+  const steps = [
+    { id:'bstep1', pct:'33%', delay:600 },
+    { id:'bstep2', pct:'66%', delay:1400 },
+    { id:'bstep3', pct:'95%', delay:2200 },
+  ];
+  if(!bar) return;
+  bar.style.width = '0%';
+  steps.forEach(s => {
+    const el = document.getElementById(s.id);
+    if(el){ el.style.opacity = '.35'; }
+    const ico = el ? el.querySelector('.lstep-ico') : null;
+    if(ico){ ico.style.background = 'var(--field)'; ico.style.borderColor = 'var(--line)'; }
+  });
+  steps.forEach(({id, pct, delay}) => {
+    setTimeout(()=>{
+      bar.style.width = pct;
+      const el = document.getElementById(id);
+      if(el){
+        el.style.opacity = '1';
+        const ico = el.querySelector('.lstep-ico');
+        if(ico){
+          ico.style.background = '#1A9BE8';
+          ico.style.borderColor = '#1A9BE8';
+          ico.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        }
+      }
+    }, delay);
+  });
+  setTimeout(() => goTo('sb6'), 3400);
+}
+
+// ── QR canvas budi ──
+(function drawBudiQR(){
+  const canvas = document.getElementById('qr-budi');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const size = 200; const cell = Math.floor(size/21);
+  function seeded(n){ let x=Math.sin(n+42)*10000; return x-Math.floor(x); }
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,size,size);
+  ctx.fillStyle='#1A1D1F';
+  for(let r=0;r<21;r++) for(let c=0;c<21;c++){
+    if(seeded(r*21+c+1000)<0.42) ctx.fillRect(c*cell,r*cell,cell,cell);
+  }
+  [[0,0],[14,0],[0,14]].forEach(([c,r])=>{
+    ctx.fillStyle='#fff'; ctx.fillRect(c*cell,r*cell,7*cell,7*cell);
+    ctx.fillStyle='#1A1D1F'; ctx.fillRect(c*cell,r*cell,7*cell,7*cell);
+    ctx.fillStyle='#fff'; ctx.fillRect((c+1)*cell,(r+1)*cell,5*cell,5*cell);
+    ctx.fillStyle='#1A1D1F'; ctx.fillRect((c+2)*cell,(r+2)*cell,3*cell,3*cell);
+  });
+})();
+
+// ── QR canvas sb6 ──
+(function drawSB6QR(){
+  const canvas = document.getElementById('qr-sb6');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const size = 200; const cell = Math.floor(size/21);
+  function seeded(n){ let x=Math.sin(n+99)*10000; return x-Math.floor(x); }
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,size,size);
+  ctx.fillStyle='#1A1D1F';
+  for(let r=0;r<21;r++) for(let c=0;c<21;c++){
+    if(seeded(r*21+c+2000)<0.42) ctx.fillRect(c*cell,r*cell,cell,cell);
+  }
+  [[0,0],[14,0],[0,14]].forEach(([c,r])=>{
+    ctx.fillStyle='#fff'; ctx.fillRect(c*cell,r*cell,7*cell,7*cell);
+    ctx.fillStyle='#1A1D1F'; ctx.fillRect(c*cell,r*cell,7*cell,7*cell);
+    ctx.fillStyle='#fff'; ctx.fillRect((c+1)*cell,(r+1)*cell,5*cell,5*cell);
+    ctx.fillStyle='#1A1D1F'; ctx.fillRect((c+2)*cell,(r+2)*cell,3*cell,3*cell);
+  });
+})();
 
 // ── Loading screen animation ──
 function startLoading(){
@@ -1643,7 +2101,7 @@ function switchFlow(flowName){
 
   // navigate
   if(flowName === 'rina') jumpTo('s0');
-  else if(flowName === 'budi') alert('Flow Pak Budi belum tersedia');
+  else if(flowName === 'budi') jumpTo('sb0');
   else if(flowName === 'profile') jumpTo('s-profile');
 }
 
