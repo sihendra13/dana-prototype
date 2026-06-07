@@ -1605,7 +1605,7 @@ html,body{
         </div>
       </div>
       <div class="btn-stack">
-        <button class="btn btn-p" onclick="goTo('sb-loading');setTimeout(startBudiLoading,300);">Selesaikan Pendaftaran</button>
+        <button class="btn btn-p" onclick="goTo('sloading');setTimeout(startLoading,300);">Selesaikan Pendaftaran</button>
       </div>
     </div>
   </div><!-- /sb5 -->
@@ -2054,6 +2054,9 @@ function getPOV(id){
   if(currentFlow === 'budi' && (id === 's0' || id === 's2' || id === 's2b')){
     return 'budi';
   }
+  if(currentFlow === 'budi' && id === 'sloading'){
+    return 'eko';
+  }
   return POV[id] || 'hendra';
 }
 
@@ -2319,10 +2322,10 @@ function startLoading(){
       ico.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
     }, delay);
   });
-  // auto advance to s8
+  // auto advance — s8 for Rina flow, sb6 for Pak Budi flow
   setTimeout(()=>{
     bar.style.width = '100%';
-    setTimeout(()=> goTo('s8'), 400);
+    setTimeout(()=> goTo(currentFlow === 'budi' ? 'sb6' : 's8'), 400);
   }, 3000);
 }
 
