@@ -107,6 +107,19 @@ html,body{
   transition:background .15s;
 }
 .hotspot:active{ background:rgba(26,155,232,.18); }
+.hotspot-flash{
+  background:rgba(26,155,232,.22) !important;
+  border:2px solid rgba(26,155,232,.7) !important;
+  border-radius:14px;
+  box-shadow:0 0 0 4px rgba(26,155,232,.12);
+  animation:hotspot-pulse 1.5s ease forwards;
+}
+@keyframes hotspot-pulse{
+  0%{opacity:0;transform:scale(.97)}
+  15%{opacity:1;transform:scale(1)}
+  70%{opacity:1;}
+  100%{opacity:0;}
+}
 
 /* ── shared topbar ── */
 .topbar{
@@ -2486,6 +2499,42 @@ function switchFlow(flowName){
 
 // init
 updatePOV('s0');
+
+// ── Hotspot Flash: klik area kosong → reveal hotspot ──
+let flashTimer = null;
+
+document.querySelector('.phone-wrap').addEventListener('click', function(e){
+  // Cek apakah yang diklik adalah hotspot atau elemen interaktif
+  const isHotspot   = e.target.closest('.hotspot');
+  const isButton    = e.target.closest('button');
+  const isClickable = e.target.closest('[onclick]');
+  const isOverlay   = e.target.closest('#transit-overlay, #qr-transit-overlay');
+
+  // Kalau klik di hotspot/tombol/elemen interaktif → skip
+  if(isHotspot || isButton || isClickable || isOverlay) return;
+
+  // Kalau klik di area kosong → flash semua hotspot di screen aktif
+  const activeScreen = document.querySelector('.screen.visible');
+  if(!activeScreen) return;
+
+  const hotspots = activeScreen.querySelectorAll('.hotspot');
+  if(hotspots.length === 0) return;
+
+  // Clear timer sebelumnya
+  if(flashTimer) clearTimeout(flashTimer);
+
+  // Tambah class flash
+  hotspots.forEach(h => {
+    h.classList.remove('hotspot-flash');
+    void h.offsetWidth; // force reflow untuk restart animation
+    h.classList.add('hotspot-flash');
+  });
+
+  // Hapus class setelah animasi selesai
+  flashTimer = setTimeout(()=>{
+    hotspots.forEach(h => h.classList.remove('hotspot-flash'));
+  }, 1600);
+});
 </script>
 
 <!-- ── html-to-image library ── -->
