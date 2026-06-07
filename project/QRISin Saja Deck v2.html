@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QRISin Saja — Referral Program Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#1A9BE8; --blue-press:#1683C7; --blue-d:#0B3C66; --navy:#10324F;
+    --ink:#15191E; --muted:#6B7280; --muted2:#9AA1AA; --line:#E7EAEE;
+    --soft:#F5F8FB; --soft2:#EEF4F9; --tint:#EAF6FE;
+    --wa:#075E54; --green:#1E8A4D; --green-bg:#E0F3E7; --amber:#A9750A; --amber-bg:#FCEFCD;
+    --red:#C0392B; --red-bg:#FBE6E3; --yellow:#C99A00; --yellow-bg:#FBF1CE;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{margin:0;background:#0b0e12;-webkit-font-smoothing:antialiased;}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;}
+  deck-stage:not(:defined){visibility:hidden;}
+  deck-stage{display:block;}
+
+  section{background:#fff;color:var(--ink);overflow:hidden;}
+  .pad{position:absolute;inset:0;padding:88px 70px 64px;display:flex;flex-direction:column;}
+
+  /* slide chrome (injected) */
+  .kicker{position:absolute;top:50px;left:70px;z-index:4;font-size:13px;font-weight:800;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:9px;}
+  .kicker::before{content:"";width:18px;height:2px;background:var(--blue);display:inline-block;}
+  .pageno{position:absolute;bottom:40px;right:70px;z-index:4;font-size:12.5px;font-weight:600;color:var(--muted2);letter-spacing:.04em;}
+  .bleed .pageno{color:rgba(255,255,255,.65);}
+  .brandmark{position:absolute;bottom:38px;left:70px;z-index:4;font-size:12.5px;font-weight:700;color:var(--muted2);letter-spacing:.02em;}
+
+  /* typography */
+  .display{font-size:62px;font-weight:800;line-height:1.08;letter-spacing:-.02em;}
+  .h1{font-size:40px;font-weight:800;line-height:1.12;letter-spacing:-.02em;}
+  .h2{font-size:30px;font-weight:800;line-height:1.18;letter-spacing:-.01em;}
+  .stmt{font-size:34px;font-weight:700;line-height:1.34;letter-spacing:-.01em;text-wrap:balance;}
+  .stmt-lg{font-size:42px;font-weight:800;line-height:1.22;letter-spacing:-.02em;text-wrap:balance;}
+  .lead{font-size:22px;font-weight:500;line-height:1.5;color:#3C434B;}
+  .body{font-size:18px;font-weight:500;line-height:1.55;color:#3C434B;}
+  .small{font-size:15px;font-weight:500;line-height:1.5;color:var(--muted);}
+  .src{font-size:12.5px;font-style:italic;color:var(--muted2);line-height:1.45;}
+  .blue{color:var(--blue);} .navy{color:var(--blue-d);} .muted{color:var(--muted);} .ink{color:var(--ink);}
+  b,strong{font-weight:800;}
+  .hl{color:var(--blue);font-weight:800;}
+  .up{font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);}
+
+  /* layout */
+  .grow{flex:1;}
+  .center{justify-content:center;}
+  .row{display:flex;}
+  .between{justify-content:space-between;}
+  .mt8{margin-top:8px;}.mt12{margin-top:12px;}.mt16{margin-top:16px;}.mt20{margin-top:20px;}
+  .mt28{margin-top:28px;}.mt36{margin-top:36px;}.mt48{margin-top:48px;}
+  .maxw{max-width:980px;}
+
+  /* full-bleed blue slides */
+  .bleed{background:radial-gradient(120% 120% at 80% -10%, #34ABF0 0%, var(--blue) 45%, #1387CE 100%);color:#fff;}
+  .bleed .pad{padding:84px 84px;}
+  .bleed .lead,.bleed .body{color:rgba(255,255,255,.92);}
+
+  /* phone image */
+  .phone{height:560px;width:auto;display:block;}
+  .phone-sm{height:500px;width:auto;display:block;}
+  .phone-row{display:flex;gap:30px;align-items:flex-start;justify-content:center;}
+  .phone-cap{font-size:13px;font-weight:700;color:var(--ink);text-align:center;margin-top:12px;}
+  .phone-cap span{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-top:2px;}
+
+  /* cards */
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 26px;}
+  .card-soft{background:var(--soft);border-radius:18px;padding:24px 26px;}
+  .chip{display:inline-flex;align-items:center;gap:9px;background:var(--tint);color:var(--blue);
+    font-size:14px;font-weight:700;padding:8px 15px;border-radius:999px;}
+  .num-badge{width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;
+    font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
+
+  /* persona */
+  .persona-tag{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:700;color:var(--blue);
+    background:var(--tint);padding:9px 16px;border-radius:999px;}
+
+  /* tables */
+  table.tbl{border-collapse:separate;border-spacing:0;width:100%;font-size:17px;}
+  table.tbl th,table.tbl td{padding:15px 18px;text-align:left;}
+  table.tbl thead th{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--line);}
+  table.tbl tbody td{border-bottom:1px solid var(--line);font-weight:600;}
+  table.tbl tbody tr:last-child td{border-bottom:none;}
+  table.tbl .tot{font-weight:800;color:var(--ink);}
+  .col-rina{background:#FBF4EC;} .col-budi{background:#EAF6FE;} .col-sari{background:#ECF8F0;}
+
+  /* flow diagram */
+  .flow{display:flex;align-items:center;gap:10px;flex-wrap:nowrap;}
+  .fnode{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:13px 16px;min-width:0;
+    display:flex;flex-direction:column;gap:3px;}
+  .fnode .fn-n{font-size:11px;font-weight:800;color:var(--blue);letter-spacing:.05em;}
+  .fnode .fn-t{font-size:14px;font-weight:700;color:var(--ink);white-space:nowrap;}
+  .farrow{color:var(--muted2);font-size:20px;flex:none;}
+  .flow-j1 .fnode{border-color:#BFE2FB;} .flow-j2 .fnode{border-color:#CDE9D6;}
+
+  /* traffic-light cards */
+  .tl{border-radius:18px;padding:24px;border:1.5px solid;}
+  .tl.green{background:var(--green-bg);border-color:#B7E2C6;}
+  .tl.yellow{background:var(--yellow-bg);border-color:#EDD98F;}
+  .tl.red{background:var(--red-bg);border-color:#F0C2BB;}
+  .tl .tl-dot{width:16px;height:16px;border-radius:50%;display:inline-block;}
+
+  /* misc */
+  .bigstat{font-size:54px;font-weight:800;letter-spacing:-.02em;color:var(--blue);line-height:1;}
+  .check-li{display:flex;gap:13px;align-items:flex-start;font-size:18px;font-weight:600;color:#2C333A;line-height:1.4;}
+  .check-li .ck{width:26px;height:26px;border-radius:50%;background:var(--tint);color:var(--blue);display:flex;align-items:center;justify-content:center;flex:none;font-weight:800;font-size:14px;margin-top:1px;}
+
+  @media (prefers-reduced-motion: no-preference){
+    [data-deck-active] .anim{animation:fadeUp .5s cubic-bezier(.22,.61,.36,1) both;}
+    [data-deck-active] .anim2{animation:fadeUp .5s .07s cubic-bezier(.22,.61,.36,1) both;}
+    [data-deck-active] .anim3{animation:fadeUp .5s .14s cubic-bezier(.22,.61,.36,1) both;}
+    @keyframes fadeUp{from{transform:translateY(13px);}to{transform:none;}}
+  }
+</style>
+</head>
+<body>
+<deck-stage width="1280" height="720">
+<!-- ===== SLIDE 1 — COVER ===== -->
+<section class="bleed" data-label="Cover">
+  <div class="pad" style="justify-content:space-between;">
+    <div class="row between" style="align-items:flex-start;">
+      <div style="background:#fff;border-radius:18px;padding:16px 20px;display:flex;align-items:center;box-shadow:0 14px 30px -16px rgba(0,0,0,.4);">
+        <img src="assets/qrisin-logo.png" alt="QRISin Saja" style="height:66px;width:auto;display:block;">
+      </div>
+      <div class="up" style="color:#fff;opacity:.85;text-align:right;line-height:1.7;">DANA Bisnis<br>Merchant Referral Program</div>
+    </div>
+
+    <div class="anim" style="max-width:1000px;">
+      <div class="up" style="color:#fff;opacity:.9;margin-bottom:22px;">UI/UX Design Proposal</div>
+      <div class="display" style="color:#fff;">Mau bantu warung Bu Sari<br>sebelah maju?<br><span style="opacity:.92;">QRISin Saja pakai DANA.</span></div>
+    </div>
+
+    <div class="row between" style="align-items:flex-end;">
+      <div style="color:#fff;">
+        <div style="font-size:20px;font-weight:800;">Hendra Fitriadi</div>
+        <div style="font-size:15px;opacity:.85;margin-top:3px;">nilakayuwangi@gmail.com</div>
+      </div>
+      <div style="color:#fff;opacity:.8;font-size:14px;font-weight:600;">28 Slide</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 2 — GAMBARAN LAPANGAN ===== -->
+<section data-sec="01 · User Understanding" data-label="Gambaran Lapangan">
+  <div class="pad">
+    <div class="stmt anim maxw">Dari warung kelontong, lapak kuliner, toko fashion lokal, hingga salon kecantikan rumahan — pedagang mikro Indonesia menjalankan usahanya setiap hari.</div>
+    <div class="row anim2 mt48" style="gap:22px;">
+      <div class="card-soft" style="flex:1;">
+        <div class="bigstat">64 jt</div>
+        <div class="body mt12" style="font-weight:600;">UMKM di Indonesia, menyumbang <b class="hl">60% PDB</b> nasional.</div>
+      </div>
+      <div class="card-soft" style="flex:1;">
+        <div class="bigstat">12%</div>
+        <div class="body mt12" style="font-weight:600;">Saja yang telah mengadopsi teknologi digital secara efektif.</div>
+      </div>
+      <div class="card-soft" style="flex:1;background:var(--tint);">
+        <div class="h2 blue" style="line-height:1.15;">Referral = channel baru</div>
+        <div class="body mt12" style="font-weight:600;">DANA sedang aktif memperluas merchant mikro lewat jalur yang sedang dieksplorasi.</div>
+      </div>
+    </div>
+    <div class="grow"></div>
+    <div class="src">Sumber: BPS via Kominfo, Agustus 2024 · Brief resmi DANA</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 3 — MASALAHNYA APA ===== -->
+<section data-sec="01 · User Understanding" data-label="Masalahnya Apa">
+  <div class="pad">
+    <div class="h1 anim maxw">Platformnya sudah ada. Lalu mengapa mayoritas pedagang mikro masih belum bergabung?</div>
+    <div class="lead anim2 mt20 maxw">GoPay, ShopeePay, OVO, DANA — semua sudah hadir bertahun-tahun. Tapi angka adopsi masih rendah.</div>
+
+    <div class="flow anim3 mt36" style="gap:14px;">
+      <div class="fnode" style="flex:1;"><div class="fn-n">REALITA</div><div class="fn-t" style="white-space:normal;">Platform sudah ada</div></div>
+      <div class="farrow">→</div>
+      <div class="fnode" style="flex:1;"><div class="fn-n">FAKTA</div><div class="fn-t" style="white-space:normal;">Adopsi tetap rendah</div></div>
+      <div class="farrow">→</div>
+      <div class="fnode" style="flex:1;"><div class="fn-n">INSIGHT</div><div class="fn-t" style="white-space:normal;">Bukan soal teknologi</div></div>
+      <div class="farrow">→</div>
+      <div class="fnode" style="flex:1;border-color:var(--blue);background:var(--tint);"><div class="fn-n">AKAR</div><div class="fn-t blue" style="white-space:normal;">Soal kepercayaan</div></div>
+    </div>
+
+    <div class="body mt28 maxw" style="font-weight:600;">Hambatan nyata: proses pendaftaran sulit, kekhawatiran pencairan dana, dan literasi digital rendah.</div>
+    <div class="grow"></div>
+    <div class="stmt blue maxw" style="font-style:italic;font-size:26px;">"Masalahnya bukan soal pilihan platform yang kurang. Ada sesuatu yang lebih dalam."</div>
+    <div class="src mt16">Sumber: ASPI &amp; Kominfo, 2024</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 4 — RINA ===== -->
+<section data-sec="01 · User Understanding" data-label="User 1 — Rina">
+  <div class="pad" style="flex-direction:row;gap:54px;align-items:stretch;">
+    <div style="width:300px;flex:none;display:flex;flex-direction:column;justify-content:center;">
+      <div style="width:120px;height:120px;border-radius:50%;background:var(--tint);color:var(--blue);font-size:46px;font-weight:800;display:flex;align-items:center;justify-content:center;">R</div>
+      <div class="h2 mt20">Rina</div>
+      <div class="persona-tag mt16">DANA User Biasa</div>
+      <div class="small mt16">Bukan pedagang — tapi jembatan yang paling natural.</div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+      <div class="stmt anim">Rina bukan pedagang. Tapi dia pengguna DANA sehari-hari yang bisa jadi jembatan.</div>
+      <div class="lead anim2 mt20">Setiap hari dia bayar pakai DANA. Dia tahu manfaatnya. Dia mau cerita ke Bu Sari.</div>
+      <div class="lead anim2 mt12">Tapi dia ragu. Takut dikira jualan. Takut merepotkan. Takut Bu Sari malah menjauh.</div>
+      <div class="stmt-lg blue anim3 mt28" style="font-size:30px;">Padahal niatnya hanya satu — ingin membantu.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 5 — PAK BUDI ===== -->
+<section data-sec="01 · User Understanding" data-label="User 2 — Pak Budi">
+  <div class="pad" style="flex-direction:row;gap:54px;align-items:stretch;">
+    <div style="width:300px;flex:none;display:flex;flex-direction:column;justify-content:center;">
+      <div style="width:120px;height:120px;border-radius:50%;background:#EAF6FE;color:var(--blue-d);font-size:46px;font-weight:800;display:flex;align-items:center;justify-content:center;">B</div>
+      <div class="h2 mt20">Pak Budi</div>
+      <div class="persona-tag mt16">DANA Bisnis Merchant</div>
+      <div class="small mt16">Referrer paling kredibel yang DANA punya.</div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+      <div class="stmt anim">Pak Budi sudah ada di dalam ekosistem DANA Bisnis — referrer paling kredibel yang DANA punya.</div>
+      <div class="lead anim2 mt20">2 tahun pakai DANA Bisnis di warung makannya. Transaksinya lancar, pelanggannya senang. Dan dia kenal banyak pedagang lain — teman satu pasar, tetangga yang jualan online.</div>
+      <div class="lead anim2 mt12">Tapi dia tidak pernah mengajak mereka. Takut dianggap cari keuntungan sendiri. Takut hubungan jadi canggung.</div>
+      <div class="stmt-lg blue anim3 mt28" style="font-size:30px;">Padahal rekomendasinya lebih dipercaya dari iklan manapun.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 6 — BU SARI ===== -->
+<section data-sec="01 · User Understanding" data-label="User 3 — Bu Sari">
+  <div class="pad" style="flex-direction:row;gap:54px;align-items:stretch;">
+    <div style="width:300px;flex:none;display:flex;flex-direction:column;justify-content:center;">
+      <div style="width:120px;height:120px;border-radius:50%;background:#ECF8F0;color:var(--green);font-size:46px;font-weight:800;display:flex;align-items:center;justify-content:center;">S</div>
+      <div class="h2 mt20">Bu Sari</div>
+      <div class="persona-tag mt16" style="background:var(--green-bg);color:var(--green);">Referred Merchant</div>
+      <div class="small mt16">15 tahun jualan kelontong. Semuanya tunai, semuanya manual.</div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+      <div class="lead anim">Bukan karena tidak mau berubah. Tapi karena tidak ada yang pernah menjelaskan dengan cara yang dia mengerti.</div>
+      <div class="lead anim2 mt12">Suatu hari Rina mengajaknya. Bukan lewat iklan — tapi lewat obrolan biasa sambil nunggu antrian. Bu Sari mendengarkan, karena yang berbicara adalah orang yang dia kenal dan percaya.</div>
+      <div class="card anim3 mt24" style="background:var(--tint);border-color:#BFE2FB;">
+        <div class="lead" style="color:var(--blue-d);font-weight:700;font-size:21px;">Hipotesis: keberhasilan program ini bukan ditentukan oleh besarnya reward, tapi oleh besarnya <span class="hl">kepercayaan</span> antara yang mengajak dan yang diajak.</div>
+        <div class="small mt12">Hipotesis ini akan divalidasi di Validation Plan.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 7 — QUALITY MERCHANT ===== -->
+<section data-sec="01 · User Understanding" data-label="Quality Merchant">
+  <div class="pad center">
+    <div class="up anim">Penutup — User Understanding</div>
+    <div class="stmt-lg anim mt16 maxw">Bukan sekadar yang daftar. Tapi yang benar-benar berjualan.</div>
+    <div class="lead anim2 mt16 maxw">DANA tidak mengejar angka registrasi. DANA mengejar merchant yang hidup.</div>
+    <div class="row anim3 mt36" style="gap:16px;">
+      <div class="fnode" style="flex:1;"><div class="fn-n">1</div><div class="fn-t" style="white-space:normal;">Berhasil daftar</div></div>
+      <div class="farrow">→</div>
+      <div class="fnode" style="flex:1;"><div class="fn-n">2</div><div class="fn-t" style="white-space:normal;">Selesaikan onboarding</div></div>
+      <div class="farrow">→</div>
+      <div class="fnode" style="flex:1;"><div class="fn-n">3</div><div class="fn-t" style="white-space:normal;">Mulai terima pembayaran</div></div>
+      <div class="farrow">→</div>
+      <div class="fnode" style="flex:1;border-color:var(--blue);background:var(--tint);"><div class="fn-n">4</div><div class="fn-t blue" style="white-space:normal;">Aktivitas bisnis nyata</div></div>
+    </div>
+    <div class="stmt blue mt36 maxw" style="font-size:24px;text-align:center;">Inilah yang dimaksud dengan akuisisi merchant berkualitas.</div>
+    <div class="src mt16">Sumber: Brief resmi DANA</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 8 — POSITIONING ===== -->
+<section data-sec="02 · Mini Program Concept" data-label="Positioning Statement">
+  <div class="pad">
+    <div class="stmt maxw">Rina bukan agen. Pak Budi bukan sales. Mereka hanya pengguna DANA yang sudah merasakan sendiri manfaatnya — dan ingin Bu Sari merasakannya juga.</div>
+    <div class="row mt48" style="gap:24px;">
+      <div class="card" style="flex:1;">
+        <div class="up" style="color:var(--muted);letter-spacing:.1em;">Mitra DANA Bisnis</div>
+        <div class="h2 mt12" style="font-size:24px;">Kerja aktif</div>
+        <div class="body mt12">Part-time / full-time, berbasis <b>komitmen</b> dan target.</div>
+      </div>
+      <div class="row" style="align-items:center;color:var(--muted2);font-size:22px;font-weight:800;">VS</div>
+      <div class="card" style="flex:1;border-color:var(--blue);background:var(--tint);">
+        <div class="up">QRISin Saja</div>
+        <div class="h2 mt12 blue" style="font-size:24px;">Casual</div>
+        <div class="body mt12">Tanpa target, berbasis <b class="hl">kepercayaan personal</b> antar orang yang saling kenal.</div>
+      </div>
+    </div>
+    <div class="grow"></div>
+    <div class="small">Pembeda inti: bukan menambah pekerjaan, tapi memfasilitasi rekomendasi yang sudah terjadi secara natural.</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 9 — NAMA & ICON ===== -->
+<section data-sec="02 · Mini Program Concept" data-label="Nama &amp; Icon">
+  <div class="pad" style="flex-direction:row;gap:56px;align-items:center;">
+    <div style="width:330px;flex:none;display:flex;flex-direction:column;align-items:center;text-align:center;">
+      <img src="assets/qrisin-logo.png" alt="QRISin Saja" style="width:230px;height:auto;">
+      <div class="chip mt20">Mini Program — tanpa prefix "DANA"</div>
+    </div>
+    <div style="flex:1;">
+      <div class="h1">Kenapa "QRISin Saja"?</div>
+      <div class="body mt16">DANA Bisnis adalah <b>destination product</b> — nama yang tepat untuk halaman tujuan merchant. Tapi referral program butuh <b class="hl">acquisition-oriented naming</b> yang dekat dengan cara bicara sehari-hari.</div>
+      <div class="body mt12">"QRISin Saja" menurunkan <i>cognitive barrier</i>: tanpa jargon, tanpa kata teknis. Satu frasa yang langsung dipahami siapa pun — <b>ajak pedagang punya QRIS, semudah itu.</b> Pendekatan ini diharapkan menaikkan click-through rate dari pengguna DANA maupun referred merchant.</div>
+      <div class="card-soft mt20" style="padding:16px 20px;">
+        <div class="src" style="font-style:normal;color:var(--muted);font-size:13px;"><b>Catatan legal:</b> penggunaan istilah "QRIS" dalam nama program <i>subject to legal &amp; regulatory review</i> terkait kebijakan Bank Indonesia dan ASPI.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 10 — ENTRY POINT ===== -->
+<section data-sec="02 · Mini Program Concept" data-label="Entry Point">
+  <div class="pad" style="flex-direction:row;gap:64px;align-items:center;">
+    <div style="position:relative;flex:none;">
+      <img src="assets/dana-home.png" alt="DANA Home" style="height:600px;width:auto;display:block;border-radius:26px;box-shadow:0 24px 50px -24px rgba(16,28,40,.45);">
+      <div style="position:absolute;left:24px;top:280px;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px rgba(26,155,232,.3);">1</div>
+      <div style="position:absolute;left:225px;top:452px;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px rgba(26,155,232,.3);">2</div>
+    </div>
+    <div style="flex:1;">
+      <div class="h1">Dua entry point di home DANA</div>
+      <div class="body mt12">Ditempatkan tepat di jalur yang sudah dilihat Rina &amp; Pak Budi setiap hari — tanpa perlu mencari.</div>
+      <div class="row mt28" style="gap:14px;align-items:flex-start;">
+        <div class="num-badge">1</div>
+        <div><div class="h2" style="font-size:21px;">Icon Mini Program</div><div class="body mt8">Di grid layanan home, sejajar dengan fitur lain yang sudah familiar.</div></div>
+      </div>
+      <div class="row mt20" style="gap:14px;align-items:flex-start;">
+        <div class="num-badge">2</div>
+        <div><div class="h2" style="font-size:21px;">Banner carousel</div><div class="body mt8">"Mau bantu warung sebelah maju?" — hook emosional dengan reward hingga Rp50.000.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 11 — LANDING PAGE REFERRER ===== -->
+<section data-sec="02 · Mini Program Concept" data-label="Landing Page Referrer">
+  <div class="pad" style="flex-direction:row;gap:60px;align-items:center;">
+    <div style="flex:1;">
+      <div class="up">Screen 2</div>
+      <div class="h1 mt12">Landing Page Referrer</div>
+      <div class="body mt16">Satu layar yang menjelaskan semuanya: apa untungnya, untuk siapa, dan apa langkah berikutnya.</div>
+      <div class="mt24" style="display:flex;flex-direction:column;gap:14px;">
+        <div class="check-li"><span class="ck">✓</span><div><b>Reward jelas di depan</b> — Kamu dapat Rp25.000, pedagang dapat QRIS gratis + Rp40.000.</div></div>
+        <div class="check-li"><span class="ck">✓</span><div><b>3 langkah sederhana</b> — bagikan, mereka daftar, reward masuk otomatis.</div></div>
+        <div class="check-li"><span class="ck">✓</span><div><b>2 pilihan berbagi</b> — link WhatsApp atau QR Code.</div></div>
+      </div>
+    </div>
+    <img src="assets/screens/s2-landing.png" alt="Landing Page Referrer" class="phone" style="height:600px;">
+  </div>
+</section>
+
+<!-- ===== SLIDE 12 — SHARE OPTIONS ===== -->
+<section data-sec="02 · Mini Program Concept" data-label="Share Options">
+  <div class="pad">
+    <div class="row between" style="align-items:flex-end;">
+      <div><div class="up">Screen 2A &amp; 2B</div><div class="h1 mt8">Dua jalur berbagi</div></div>
+      <div class="chip">Deferred deep link mendeteksi apakah Bu Sari sudah punya app DANA</div>
+    </div>
+    <div class="row grow mt20" style="gap:48px;align-items:center;justify-content:center;">
+      <div style="display:flex;align-items:center;gap:26px;">
+        <img src="assets/screens/s2a-whatsapp.png" alt="WhatsApp" class="phone-sm" style="height:472px;">
+        <div style="max-width:230px;">
+          <div class="chip" style="background:#E4F5EC;color:var(--wa);">Jalur Digital</div>
+          <div class="body mt12"><b>Link WhatsApp</b> dengan pesan otomatis generic — referrer tinggal pilih kontaknya sendiri.</div>
+        </div>
+      </div>
+      <div style="width:1px;height:340px;background:var(--line);"></div>
+      <div style="display:flex;align-items:center;gap:26px;">
+        <img src="assets/screens/s2b-qr.png" alt="QR Code" class="phone-sm" style="height:472px;">
+        <div style="max-width:230px;">
+          <div class="chip">Jalur Fisik</div>
+          <div class="body mt12"><b>QR Code dinamis</b> unik per user — bisa disimpan atau dicetak dan ditempel di toko.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 13 — INCENTIVE OVERVIEW ===== -->
+<section data-sec="03 · Incentive Scheme" data-label="Incentive Scheme">
+  <div class="pad">
+    <div class="lead maxw" style="color:var(--ink);font-weight:600;">Reward yang adil bukan berarti reward yang sama. Tiga peran berbeda, tiga kebutuhan berbeda — dihargai sesuai kontribusinya.</div>
+    <div class="mt28">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th style="width:13%;">Tahap</th>
+            <th style="width:31%;">Kondisi</th>
+            <th class="col-rina">Rina <span style="font-weight:600;text-transform:none;letter-spacing:0;color:var(--muted);">· DANA User</span></th>
+            <th class="col-budi">Pak Budi <span style="font-weight:600;text-transform:none;letter-spacing:0;color:var(--muted);">· Merchant</span></th>
+            <th class="col-sari">Bu Sari <span style="font-weight:600;text-transform:none;letter-spacing:0;color:var(--muted);">· Referred</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Tahap 1</b></td>
+            <td>Selesai daftar &amp; KYC</td>
+            <td class="col-rina">Rp5.000 <span class="small">voucher</span></td>
+            <td class="col-budi">Rp10.000 <span class="small">saldo</span></td>
+            <td class="col-sari">Rp15.000 <span class="small">saldo</span></td>
+          </tr>
+          <tr>
+            <td><b>Tahap 2</b></td>
+            <td>≥3 transaksi dari pelanggan unik</td>
+            <td class="col-rina">Rp20.000 <span class="small">saldo</span></td>
+            <td class="col-budi">Rp40.000 <span class="small">saldo</span></td>
+            <td class="col-sari">Rp25.000 <span class="small">saldo</span></td>
+          </tr>
+          <tr>
+            <td class="tot">Total</td>
+            <td></td>
+            <td class="col-rina tot blue">Rp25.000</td>
+            <td class="col-budi tot blue">Rp50.000</td>
+            <td class="col-sari tot blue">Rp40.000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grow"></div>
+    <div class="chip">Semua reward masuk langsung ke saldo DANA — tidak perlu klaim manual</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 14 — LOGIKA REWARD ===== -->
+<section data-sec="03 · Incentive Scheme" data-label="Logika Reward">
+  <div class="pad">
+    <div class="h1">Logika di balik angkanya</div>
+    <div class="row mt28" style="gap:22px;align-items:stretch;">
+      <div class="card" style="flex:1;display:flex;flex-direction:column;">
+        <div class="num-badge" style="background:var(--tint);color:var(--blue);">A</div>
+        <div class="h2 mt16" style="font-size:21px;">Pak Budi &gt; Rina</div>
+        <div class="body mt12">Kredibilitas sebagai sesama merchant lebih tinggi, dan jaringannya jauh lebih relevan dengan target.</div>
+      </div>
+      <div class="card" style="flex:1;display:flex;flex-direction:column;">
+        <div class="num-badge" style="background:var(--tint);color:var(--blue);">B</div>
+        <div class="h2 mt16" style="font-size:21px;">Bu Sari besar di Tahap 1</div>
+        <div class="body mt12">Pedagang butuh motivasi untuk <i>mulai</i>. Reward awal yang besar menurunkan barrier onboarding.</div>
+      </div>
+      <div class="card" style="flex:1;display:flex;flex-direction:column;">
+        <div class="num-badge" style="background:var(--tint);color:var(--blue);">C</div>
+        <div class="h2 mt16" style="font-size:21px;">Tahap 2 paling besar</div>
+        <div class="body mt12">Mendorong semua pihak memastikan merchant <b class="hl">benar-benar aktif</b> bertransaksi, bukan sekadar terdaftar.</div>
+      </div>
+    </div>
+    <div class="card-soft mt24" style="padding:18px 24px;">
+      <div class="up" style="color:var(--muted);">Catatan teknis</div>
+      <div class="body mt8" style="font-weight:600;">Rina &amp; Pak Budi memakai flow yang sama persis. Sistem otomatis mengenali tipe akun referrer saat link referral di-generate: user biasa mendapat Rp25.000, merchant mendapat Rp50.000. Tidak ada perbedaan pengalaman di sisi pengguna.</div>
+    </div>
+    <div class="grow"></div>
+    <div class="small">Insentif diselaraskan dengan tujuan akhir: merchant yang hidup, bukan angka registrasi.</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 15 — ANTI-ABUSE ===== -->
+<section data-sec="03 · Incentive Scheme" data-label="Anti-Abuse Mechanism">
+  <div class="pad">
+    <div class="h1">Dirancang dengan mempertimbangkan penyalahgunaan</div>
+    <div class="mt24">
+      <table class="tbl">
+        <thead>
+          <tr><th style="width:34%;">Worst case</th><th>Mekanisme pencegahan</th></tr>
+        </thead>
+        <tbody>
+          <tr><td style="color:var(--red);font-weight:800;">Spam referral</td><td>1 nomor HP hanya bisa didaftarkan <b>1 kali</b></td></tr>
+          <tr><td style="color:var(--red);font-weight:800;">Transaksi palsu</td><td>Syarat <b>3 transaksi</b> dari pelanggan unik yang berbeda</td></tr>
+          <tr><td style="color:var(--red);font-weight:800;">Merchant fiktif</td><td>Ter-filter natural — tidak akan pernah mencapai Tahap 2</td></tr>
+          <tr><td style="color:var(--red);font-weight:800;">Reward abuse</td><td>KYC wajib · <b>1 NIK = 1 merchant</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grow"></div>
+    <div class="card-soft" style="display:flex;gap:14px;align-items:center;">
+      <div style="font-size:22px;">🛡️</div>
+      <div class="body" style="font-weight:600;">Filter berlapis ini bekerja secara natural — merchant berkualitas lolos, abuse tersaring sendirinya.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 16 — UX FLOW OVERVIEW ===== -->
+<section data-sec="04 · End-to-End UX Flow" data-label="UX Flow Overview">
+  <div class="pad">
+    <div class="h1">Alur end-to-end — dua journey, sembilan screen</div>
+
+    <div class="mt36">
+      <div class="row" style="align-items:center;gap:12px;margin-bottom:14px;">
+        <div class="chip">Journey 1 — Referrer (Rina / Pak Budi)</div>
+      </div>
+      <div class="flow flow-j1">
+        <div class="fnode" style="flex:1;"><div class="fn-n">SCREEN 1</div><div class="fn-t">Entry point</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode" style="flex:1;"><div class="fn-n">SCREEN 2</div><div class="fn-t">Landing page</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode" style="flex:1;"><div class="fn-n">SCREEN 2A · 2B</div><div class="fn-t">Share WA / QR</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode" style="flex:1;"><div class="fn-n">SCREEN 3</div><div class="fn-t">Tracking</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode" style="flex:1;"><div class="fn-n">SCREEN 4</div><div class="fn-t">Reward notif</div></div>
+      </div>
+    </div>
+
+    <div class="mt36">
+      <div class="row" style="align-items:center;gap:12px;margin-bottom:14px;">
+        <div class="chip" style="background:var(--green-bg);color:var(--green);">Journey 2 — Referred Merchant (Bu Sari)</div>
+      </div>
+      <div class="flow flow-j2">
+        <div class="fnode" style="flex:1;"><div class="fn-n">MASUK</div><div class="fn-t">Terima link / QR</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode" style="flex:1;"><div class="fn-n">SCREEN 5</div><div class="fn-t">Landing Bu Sari</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode" style="flex:1;"><div class="fn-n">SCREEN 6</div><div class="fn-t">Form daftar</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode" style="flex:1;"><div class="fn-n">SCREEN 7</div><div class="fn-t">KYC</div></div>
+        <div class="farrow">→</div>
+        <div class="fnode" style="flex:1;border-color:var(--green);background:var(--green-bg);"><div class="fn-n" style="color:var(--green);">SCREEN 8</div><div class="fn-t" style="color:var(--green);">QRIS aktif</div></div>
+      </div>
+    </div>
+
+    <div class="grow"></div>
+    <div class="small">Dua journey bertemu di titik konversi: pedagang yang diajak menjadi merchant aktif.</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 17 — SCREEN 1 ENTRY POINT ===== -->
+<section data-sec="04 · End-to-End UX Flow" data-label="Screen 1 — Entry Point">
+  <div class="pad" style="flex-direction:row;gap:64px;align-items:center;">
+    <div style="flex:1;">
+      <div class="up">Screen 1 — Journey Referrer</div>
+      <div class="h1 mt12">Mulai dari yang sudah dilihat tiap hari</div>
+      <div class="body mt16">Tanpa kanal baru, tanpa aplikasi tambahan. Rina &amp; Pak Budi menemukan QRISin Saja di dalam app DANA yang sudah mereka percaya.</div>
+      <div class="row mt24" style="gap:14px;align-items:flex-start;">
+        <div class="num-badge">1</div><div class="body" style="font-weight:600;"><b>Icon Mini Program</b> di grid layanan home.</div>
+      </div>
+      <div class="row mt16" style="gap:14px;align-items:flex-start;">
+        <div class="num-badge">2</div><div class="body" style="font-weight:600;"><b>Banner carousel</b> dengan hook emosional + reward hingga Rp50.000.</div>
+      </div>
+    </div>
+    <img src="assets/dana-home.png" alt="Entry point" style="height:600px;width:auto;border-radius:26px;box-shadow:0 24px 50px -24px rgba(16,28,40,.45);">
+  </div>
+</section>
+
+<!-- ===== SLIDE 18 — SCREEN 2 + SHARE ===== -->
+<section data-sec="04 · End-to-End UX Flow" data-label="Screen 2 — Landing + Share">
+  <div class="pad">
+    <div class="up">Screen 2 · 2A · 2B</div>
+    <div class="h1 mt8">Landing page &amp; dua jalur berbagi</div>
+    <div class="phone-row grow mt16" style="align-items:center;">
+      <div><img src="assets/screens/s2-landing.png" class="phone" style="height:430px;" alt="Landing"><div class="phone-cap">Landing Page<span>Semua info + aksi dalam 1 layar</span></div></div>
+      <div><img src="assets/screens/s2a-whatsapp.png" class="phone" style="height:430px;" alt="WhatsApp"><div class="phone-cap">Jalur WhatsApp<span>Pesan otomatis + salin link</span></div></div>
+      <div><img src="assets/screens/s2b-qr.png" class="phone" style="height:430px;" alt="QR"><div class="phone-cap">QR Code Referral<span>Disimpan atau dicetak</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 19 — SCREEN 3 & 4 (visual) ===== -->
+<section data-sec="04 · End-to-End UX Flow" data-label="Screen 3 & 4 Tracking">
+  <div class="pad">
+    <div class="up">Screen 3 &amp; 4</div>
+    <div class="h1 mt8">Tracking transparan, reward otomatis</div>
+    <div class="row mt16" style="gap:46px;align-items:center;justify-content:center;flex:1;">
+      <div style="display:flex;align-items:center;gap:22px;">
+        <img src="assets/screens/s3-tracking.png" class="phone" style="height:430px;" alt="Tracking">
+        <div style="max-width:215px;">
+          <div class="chip">Tracking</div>
+          <div class="body mt12">Progress tiap referral terlihat jelas per milestone. Referrer tahu persis statusnya.</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:22px;">
+        <img src="assets/screens/s4-notif.png" class="phone" style="height:430px;" alt="Notifikasi">
+        <div style="max-width:215px;">
+          <div class="chip">Notifikasi</div>
+          <div class="body mt12">Reward masuk ke saldo DANA <b class="hl">tanpa klaim</b>. Ada reminder bila pedagang belum daftar.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-soft" style="display:flex;gap:30px;align-items:center;padding:16px 24px;">
+      <div style="flex:1;">
+        <div class="up" style="color:var(--muted);margin-bottom:9px;">Status referral</div>
+        <div class="row" style="gap:8px;flex-wrap:wrap;">
+          <span class="chip" style="background:#FEF1CF;color:#A9750A;">Menunggu</span>
+          <span class="chip" style="background:#E1F1FE;color:#1683C7;">Terdaftar</span>
+          <span class="chip" style="background:#D9F2E2;color:#1E8A4D;">Aktif</span>
+          <span class="chip">Reward Masuk</span>
+        </div>
+      </div>
+      <div style="width:1px;height:56px;background:var(--line);"></div>
+      <div style="flex:1;">
+        <div class="up" style="color:var(--muted);margin-bottom:9px;">Notifikasi otomatis</div>
+        <div class="small" style="font-weight:600;">Tahap 1 selesai · Tahap 2 selesai · reminder bila pedagang belum daftar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 19B — REWARD EXPERIENCE & ENGINEERING ===== -->
+<section data-sec="04 · End-to-End UX Flow" data-label="Reward Experience">
+  <div class="pad">
+    <div class="up">Screen 3 &amp; 4 · Reward Experience</div>
+    <div class="h1 mt8">Kenapa reward otomatis, tanpa klaim manual</div>
+    <div class="row mt20" style="gap:34px;align-items:stretch;flex:1;">
+      <div style="flex:1.05;display:flex;flex-direction:column;">
+        <div class="body">Proses klaim manual sengaja dihilangkan. Reward langsung masuk ke saldo DANA otomatis saat milestone tercapai, dengan transparansi lewat tracking real-time dan notifikasi di tiap tahap.</div>
+        <div class="up mt24" style="color:var(--muted);">Justifikasi berbasis data</div>
+        <div class="mt14" style="display:flex;flex-direction:column;gap:14px;">
+          <div class="check-li" style="font-size:16px;"><span class="ck">✓</span><div>Automatic reward delivery terbukti lebih efektif: reward terkirim dalam <b>&lt;60 detik</b> setelah konversi tervalidasi.</div></div>
+          <div class="check-li" style="font-size:16px;"><span class="ck">✓</span><div>Mengeliminasi <b class="hl">~90% fraudulent claims</b> lewat deteksi otomatis sebelum payout.</div></div>
+          <div class="check-li" style="font-size:16px;"><span class="ck">✓</span><div>Chime, Wise, dan Cash App memakai model otomatis tanpa klaim manual.</div></div>
+        </div>
+        <div class="grow"></div>
+        <div class="src">Sumber: ADR Enterprise, 2025</div>
+      </div>
+      <div class="card" style="flex:1;background:#0F2A3D;border:none;display:flex;flex-direction:column;">
+        <div class="up" style="color:#7FC4F0;">Catatan teknis · engineering</div>
+        <div style="display:flex;flex-direction:column;gap:13px;margin-top:16px;">
+          <div style="font-size:14.5px;line-height:1.5;color:#D7E6F2;font-weight:500;"><b style="color:#fff;">Event-driven:</b> tiap milestone (KYC, transaksi ke-1, ke-3) men-trigger webhook ke reward engine.</div>
+          <div style="font-size:14.5px;line-height:1.5;color:#D7E6F2;font-weight:500;"><b style="color:#fff;">Validasi anti-abuse:</b> 1 NIK = 1 merchant, 3 transaksi unik, dicek sebelum payout.</div>
+          <div style="font-size:14.5px;line-height:1.5;color:#D7E6F2;font-weight:500;"><b style="color:#fff;">Payout:</b> via DANA internal transfer API, langsung ke saldo referrer &amp; merchant.</div>
+          <div style="font-size:14.5px;line-height:1.5;color:#D7E6F2;font-weight:500;"><b style="color:#fff;">Audit trail:</b> tersimpan otomatis untuk compliance &amp; dispute resolution.</div>
+          <div style="font-size:14.5px;line-height:1.5;color:#D7E6F2;font-weight:500;"><b style="color:#fff;">Notifikasi:</b> push via FCM (Firebase Cloud Messaging) tiap status berubah.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 20 — SCREEN 5 LANDING BU SARI ===== -->
+<section data-sec="04 · End-to-End UX Flow" data-label="Screen 5 — Landing Bu Sari">
+  <div class="pad" style="flex-direction:row;gap:60px;align-items:center;">
+    <div style="flex:1;">
+      <div class="up">Screen 5 — Journey Merchant</div>
+      <div class="h1 mt12">Landing yang dibuka Bu Sari</div>
+      <div class="card mt20" style="background:var(--tint);border-color:#BFE2FB;">
+        <div class="h2" style="font-size:20px;color:var(--blue-d);">"Rina mengajakmu bergabung"</div>
+        <div class="body mt8">Nama referrer tampil di paling atas — <b class="hl">trust terbangun</b> sebelum satu kata pun soal produk dibaca.</div>
+      </div>
+      <div class="row mt20" style="gap:14px;align-items:flex-start;">
+        <div class="num-badge" style="background:var(--tint);color:var(--blue);">★</div>
+        <div class="body" style="font-weight:600;">Benefit konkret: QRIS gratis, Rp15.000 saat aktif, Rp25.000 setelah 3 transaksi.</div>
+      </div>
+      <div class="row mt16" style="gap:14px;align-items:flex-start;">
+        <div class="num-badge" style="background:var(--tint);color:var(--blue);">↗</div>
+        <div class="body" style="font-weight:600;"><b>Deferred deep link</b> — sistem mendeteksi apakah Bu Sari sudah punya app DANA dan mengarahkan sesuai kondisinya.</div>
+      </div>
+    </div>
+    <img src="assets/screens/s5-landing.png" alt="Landing Bu Sari" class="phone" style="height:600px;">
+  </div>
+</section>
+
+<!-- ===== SLIDE 21 — SCREEN 6 & 7 FORM & KYC ===== -->
+<section data-sec="04 · End-to-End UX Flow" data-label="Screen 6 &amp; 7 — Form &amp; KYC">
+  <div class="pad">
+    <div class="up">Screen 6 &amp; 7</div>
+    <div class="h1 mt8">Daftar yang ramah literasi digital</div>
+    <div class="row grow mt16" style="gap:50px;align-items:center;justify-content:center;">
+      <div style="display:flex;align-items:center;gap:24px;">
+        <img src="assets/screens/s6-form.png" class="phone" style="height:470px;" alt="Form">
+        <div style="max-width:215px;">
+          <div class="chip">Form — 3 field</div>
+          <div class="body mt12">Nama, jenis usaha lewat <b>kartu visual</b>, dan lokasi GPS otomatis. Minim ketik.</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:24px;">
+        <img src="assets/screens/s7-kyc.png" class="phone" style="height:470px;" alt="KYC">
+        <div style="max-width:215px;">
+          <div class="chip">KYC</div>
+          <div class="body mt12">Panduan visual di tiap langkah. <b class="hl">Tanpa OTP</b> — sudah verified dari akun DANA.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 22 — SCREEN 8 SELESAI ===== -->
+<section data-sec="04 · End-to-End UX Flow" data-label="Screen 8 — Selesai &amp; Aktif">
+  <div class="pad" style="flex-direction:row;gap:60px;align-items:center;">
+    <div style="flex:1;">
+      <div class="up">Screen 8</div>
+      <div class="h1 mt12">QRIS aktif, reward langsung terasa</div>
+      <div class="row mt24" style="gap:14px;align-items:flex-start;">
+        <div class="num-badge" style="background:var(--green-bg);color:var(--green);">✓</div>
+        <div class="body" style="font-weight:600;"><b>QRIS sudah aktif</b> dan siap dipakai menerima pembayaran non tunai.</div>
+      </div>
+      <div class="row mt16" style="gap:14px;align-items:flex-start;">
+        <div class="num-badge" style="background:var(--tint);color:var(--blue);">Rp</div>
+        <div class="body" style="font-weight:600;"><b>Rp15.000 masuk</b> ke saldo DANA seketika — bukti reward itu nyata.</div>
+      </div>
+      <div class="row mt16" style="gap:14px;align-items:flex-start;">
+        <div class="num-badge" style="background:var(--tint);color:var(--blue);">🏆</div>
+        <div class="body" style="font-weight:600;">Motivasi Tahap 2 jelas di layar: <b class="hl">+Rp25.000</b> setelah 3 transaksi.</div>
+      </div>
+    </div>
+    <img src="assets/screens/s8-selesai.png" alt="Selesai &amp; Aktif" class="phone" style="height:600px;">
+  </div>
+</section>
+
+<!-- ===== SLIDE 23 — PROTOTYPE LINK ===== -->
+<section data-sec="04 · End-to-End UX Flow" data-label="Prototype Link">
+  <div class="pad center" style="align-items:center;text-align:center;">
+    <div class="up">Prototype interaktif</div>
+    <div class="h1 mt12 maxw">Coba sendiri alur lengkapnya</div>
+    <div class="body mt12 maxw" style="max-width:680px;">Sembilan screen ini hidup sebagai prototype interaktif yang bisa diklik.</div>
+
+    <div class="mt28" style="width:220px;height:220px;border:2px dashed #BBD9F0;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:var(--soft);">
+      <svg width="74" height="74" viewBox="0 0 24 24" fill="#9AB6CC"><path d="M3 3h7v7H3V3Zm2 2v3h3V5H5Zm9-2h7v7h-7V3Zm2 2v3h3V5h-3ZM3 14h7v7H3v-7Zm2 2v3h3v-3H5Zm9 0h2v2h-2v-2Zm2 2h2v2h-2v-2Zm2-2h2v2h-2v-2Zm0 4h2v1h-2v-1Zm-4 0h2v1h-2v-1Zm2-6h2v2h-2v-2Z"/></svg>
+      <div class="small" style="font-weight:700;">QR akan ditempel di sini</div>
+    </div>
+
+    <div class="mt20" style="display:inline-flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:13px 20px;">
+      <span class="small" style="font-weight:700;color:var(--muted);">Link prototype:</span>
+      <span class="body" style="font-weight:700;color:var(--blue);" contenteditable="true" spellcheck="false">[ tempel link prototype di sini ]</span>
+    </div>
+    <div class="src mt16">Slot ini disiapkan untuk diisi setelah prototype final di-publish.</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 24 — SUCCESS METRICS ===== -->
+<section data-sec="05 · Validation Plan" data-label="Success Metrics">
+  <div class="pad">
+    <div class="h1">Success metrics</div>
+    <div class="row mt20" style="gap:30px;align-items:stretch;flex:1;">
+      <div style="flex:1.5;display:flex;flex-direction:column;">
+        <div class="up" style="margin-bottom:12px;">Primary</div>
+        <div style="display:flex;flex-direction:column;gap:9px;flex:1;">
+          <div class="row between card" style="padding:12px 18px;align-items:center;gap:18px;">
+            <div style="min-width:0;"><div class="body" style="font-weight:700;">K-Factor</div><div class="small" style="margin-top:3px;font-size:12.5px;line-height:1.35;">Tiap 100 user yang ikut, ~15 merchant baru aktif. Angka konservatif karena merchant lebih sulit diajak.</div></div>
+            <span class="h2 blue" style="font-size:21px;white-space:nowrap;">&gt; 0,15</span>
+          </div>
+          <div class="row between card" style="padding:12px 18px;align-items:center;gap:18px;">
+            <div style="min-width:0;"><div class="body" style="font-weight:700;">Rasio konversi pendaftaran</div><div class="small" style="margin-top:3px;font-size:12.5px;line-height:1.35;">Dari 100 penerima link atau QR, minimal 30 selesai daftar dan KYC.</div></div>
+            <span class="h2 blue" style="font-size:21px;white-space:nowrap;">&gt; 30%</span>
+          </div>
+          <div class="row between card" style="padding:12px 18px;align-items:center;gap:18px;">
+            <div style="min-width:0;"><div class="body" style="font-weight:700;">Merchant activation rate</div><div class="small" style="margin-top:3px;font-size:12.5px;line-height:1.35;">Dari yang berhasil daftar, minimal 50% lanjut sampai akun aktif.</div></div>
+            <span class="h2 blue" style="font-size:21px;white-space:nowrap;">&gt; 50%</span>
+          </div>
+          <div class="row between card" style="padding:12px 18px;align-items:center;gap:18px;">
+            <div style="min-width:0;"><div class="body" style="font-weight:700;">Kecepatan transaksi pertama</div><div class="small" style="margin-top:3px;font-size:12.5px;line-height:1.35;">Rata-rata dari akun aktif sampai transaksi QRIS pertama maksimal 7 hari.</div></div>
+            <span class="h2 blue" style="font-size:21px;white-space:nowrap;">&lt; 7 hari</span>
+          </div>
+          <div class="row between card" style="padding:12px 18px;align-items:center;gap:18px;">
+            <div style="min-width:0;"><div class="body" style="font-weight:700;">First transaction rate</div><div class="small" style="margin-top:3px;font-size:12.5px;line-height:1.35;">Dari yang KYC selesai, minimal 40% melakukan transaksi pertama.</div></div>
+            <span class="h2 blue" style="font-size:21px;white-space:nowrap;">&gt; 40%</span>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <div class="up" style="margin-bottom:12px;color:var(--muted);">Secondary</div>
+        <div class="card-soft" style="flex:1;display:flex;flex-direction:column;gap:16px;justify-content:center;">
+          <div class="check-li"><span class="ck">·</span><div><b>CAC rujukan:</b> biaya akuisisi per merchant.</div></div>
+          <div class="check-li"><span class="ck">·</span><div><b>Repeat referrer rate:</b> yang mengajak lebih dari sekali.</div></div>
+          <div class="check-li"><span class="ck">·</span><div><b>Drop-off rate:</b> di tiap langkah onboarding.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="small mt16">K-Factor &gt; 0,15 adalah target hipotesis utama, penanda program tumbuh secara organik.</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 25 — RISK MONITORING ===== -->
+<section data-sec="05 · Validation Plan" data-label="Risk Monitoring">
+  <div class="pad">
+    <div class="h1">Risk monitoring &amp; guardrails</div>
+    <div class="mt24">
+      <table class="tbl">
+        <thead><tr><th style="width:30%;">Risiko</th><th style="width:34%;">Indikator</th><th>Threshold / aksi</th></tr></thead>
+        <tbody>
+          <tr><td><b>Rasio deteksi fraud</b></td><td>Transaksi mencurigakan</td><td>Threshold ditetapkan tim bisnis</td></tr>
+          <tr><td><b>Spam referral</b></td><td>&gt;5 referral dalam 24 jam</td><td><span style="color:var(--red);font-weight:800;">Flag</span> untuk review</td></tr>
+          <tr><td><b>Merchant fiktif</b></td><td>Tidak ada transaksi dalam 14 hari</td><td><span style="color:var(--red);font-weight:800;">Auto-expire</span></td></tr>
+          <tr><td><b>Drop-off onboarding</b></td><td>Berhenti di tengah pendaftaran</td><td>Reminder notifikasi 24 jam</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grow"></div>
+    <div class="small">Guardrail dipantau real-time sejak fase pilot untuk mencegah eskalasi biaya &amp; abuse.</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 26 — PILOT PROGRAM ===== -->
+<section data-sec="05 · Validation Plan" data-label="Pilot Program">
+  <div class="pad">
+    <div class="h1">Pilot program bertahap</div>
+    <div class="row mt24" style="gap:18px;align-items:stretch;">
+      <div class="card" style="flex:1;display:flex;flex-direction:column;">
+        <div class="up" style="color:var(--muted);">Fase 1 · Hari 1–7</div>
+        <div class="h2 mt8" style="font-size:20px;">Uji coba internal</div>
+        <div class="body mt8">500 karyawan DANA — validasi alur &amp; bug.</div>
+      </div>
+      <div class="row" style="align-items:center;color:var(--muted2);font-size:20px;">→</div>
+      <div class="card" style="flex:1.1;display:flex;flex-direction:column;border-color:var(--blue);background:var(--tint);">
+        <div class="up">Fase 2 · Hari 8–30</div>
+        <div class="h2 mt8 blue" style="font-size:20px;">Regional Yogyakarta</div>
+        <div class="body mt8">2.000 pengguna + 500 merchant. <b>A/B test</b> jalur digital vs fisik.</div>
+      </div>
+      <div class="row" style="align-items:center;color:var(--muted2);font-size:20px;">→</div>
+      <div class="card" style="flex:1;display:flex;flex-direction:column;">
+        <div class="up" style="color:var(--muted);">Fase 3 · Bulan 2</div>
+        <div class="h2 mt8" style="font-size:20px;">Full launch nasional</div>
+        <div class="body mt8">Roll-out menyeluruh bila metrik tercapai.</div>
+      </div>
+    </div>
+    <div class="card-soft mt24">
+      <div class="row" style="align-items:center;gap:10px;margin-bottom:10px;"><span class="chip">📍 Kenapa Yogyakarta?</span></div>
+      <div class="row" style="gap:28px;">
+        <div class="small" style="flex:1;">Pertumbuhan UMKM positif &amp; stabil sepanjang 2023 (BPS).</div>
+        <div class="small" style="flex:1;">Sektor F&amp;B &amp; perdagangan dominan — cocok dengan target merchant.</div>
+        <div class="small" style="flex:1;">Pemerintah aktif: program Grebek UMKM DIY 2024.</div>
+        <div class="small" style="flex:1;">Komunitas pasar tradisional aktif — ideal untuk uji jalur fisik QR.</div>
+      </div>
+    </div>
+    <div class="src mt12">Sumber: BPS, 2024 · Grebek UMKM DIY 2024</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 27 — DECISION MATRIX ===== -->
+<section data-sec="05 · Validation Plan" data-label="Decision Matrix">
+  <div class="pad">
+    <div class="h1">Decision matrix</div>
+    <div class="row grow mt28" style="gap:22px;align-items:stretch;">
+      <div class="tl green" style="flex:1;display:flex;flex-direction:column;">
+        <div class="row" style="align-items:center;gap:10px;"><span class="tl-dot" style="background:var(--green);"></span><span class="up" style="color:var(--green);">Lampu Hijau</span></div>
+        <div class="h2 mt16" style="font-size:21px;color:var(--green);">Lanjut nasional</div>
+        <div class="body mt12" style="color:#2C5A3E;">Retensi &gt;25% <b>dan</b> CAC dalam budget.</div>
+      </div>
+      <div class="tl yellow" style="flex:1;display:flex;flex-direction:column;">
+        <div class="row" style="align-items:center;gap:10px;"><span class="tl-dot" style="background:var(--yellow);"></span><span class="up" style="color:var(--yellow);">Lampu Kuning</span></div>
+        <div class="h2 mt16" style="font-size:21px;color:#9A7700;">Iterasi reward</div>
+        <div class="body mt12" style="color:#6B5400;">Aktivasi &lt;10% — perkuat insentif menuju Tahap 2.</div>
+      </div>
+      <div class="tl red" style="flex:1;display:flex;flex-direction:column;">
+        <div class="row" style="align-items:center;gap:10px;"><span class="tl-dot" style="background:var(--red);"></span><span class="up" style="color:var(--red);">Lampu Merah</span></div>
+        <div class="h2 mt16" style="font-size:21px;color:var(--red);">Stop</div>
+        <div class="body mt12" style="color:#8A3128;">Fraud tinggi <b>dan</b> channel lain lebih murah.</div>
+      </div>
+    </div>
+    <div class="small mt24">Keputusan berbasis data, bukan asumsi — tiap skenario sudah punya jalur tindak lanjut yang jelas.</div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 28 — CLOSING ===== -->
+<section class="bleed" data-label="Closing">
+  <div class="pad" style="justify-content:space-between;">
+    <div style="background:#fff;border-radius:18px;padding:14px 18px;align-self:flex-start;display:flex;align-items:center;box-shadow:0 14px 30px -16px rgba(0,0,0,.4);">
+      <img src="assets/qrisin-logo.png" alt="QRISin Saja" style="height:54px;width:auto;display:block;">
+    </div>
+    <div style="max-width:1000px;">
+      <div class="stmt-lg" style="color:#fff;font-size:38px;">Rina bukan agen. Pak Budi bukan sales. Mereka hanya pengguna DANA yang ingin Bu Sari merasakan manfaat yang sama.</div>
+      <div class="display mt28" style="color:#fff;font-size:44px;">QRISin Saja dirancang bukan untuk viral —<br>tapi untuk dipercaya.</div>
+    </div>
+    <div class="row between" style="align-items:flex-end;">
+      <div style="color:#fff;">
+        <div style="font-size:20px;font-weight:800;">Hendra Fitriadi</div>
+        <div style="font-size:15px;opacity:.85;margin-top:3px;">nilakayuwangi@gmail.com</div>
+      </div>
+      <div style="color:#fff;opacity:.8;font-size:14px;font-weight:600;">Terima kasih</div>
+    </div>
+  </div>
+</section>
+
+<!--SLIDES-->
+</deck-stage>
+
+<script>
+  // inject kicker + page number chrome into each slide
+  (function(){
+    const secs = [...document.querySelectorAll('deck-stage > section')];
+    const total = secs.length;
+    secs.forEach((s,i)=>{
+      const p = document.createElement('div');
+      p.className='pageno'; p.textContent = String(i+1).padStart(2,'0')+' / '+String(total).padStart(2,'0');
+      if(!s.classList.contains('bleed')){
+        const sec = s.getAttribute('data-sec');
+        if(sec){ const k=document.createElement('div'); k.className='kicker'; k.textContent=sec; s.appendChild(k); }
+        const bm=document.createElement('div'); bm.className='brandmark'; bm.textContent='QRISin Saja'; s.appendChild(bm);
+      }
+      s.appendChild(p);
+    });
+  })();
+</script>
+<script src="deck-stage.js"></script>
+</body>
+</html>

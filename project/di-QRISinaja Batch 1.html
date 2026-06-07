@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QRISin Saja — Batch 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#1A9BE8;
+    --blue-press:#1683C7;
+    --blue-tint:#EAF6FE;
+    --ink:#1A1D1F;
+    --muted:#8A9099;
+    --muted-2:#A8AEB6;
+    --line:#E8EAED;
+    --field:#F2F4F6;
+    --wa-green:#075E54;
+    --wa-bubble:#D9FDD3;
+    --wa-wall:#ECE4DB;
+    --screen-w:390px;
+    --screen-h:844px;
+  }
+  *{box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+  html,body{margin:0;}
+  body{
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #F4FAFE 0%, transparent 60%),
+      #EDEFF2;
+    color:var(--ink);
+    padding:56px 48px 80px;
+    min-height:100vh;
+  }
+
+  /* ---------- canvas header ---------- */
+  .canvas-head{max-width:1340px;margin:0 auto 44px;}
+  .kicker{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--blue);background:#fff;border:1px solid var(--line);
+    padding:7px 14px;border-radius:999px;
+  }
+  .kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);}
+  .canvas-head h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:18px 0 6px;}
+  .canvas-head p{font-size:15px;color:var(--muted);margin:0;max-width:640px;line-height:1.5;}
+
+  /* ---------- frames row ---------- */
+  .row{
+    display:flex;gap:64px;align-items:flex-start;justify-content:center;
+    flex-wrap:wrap;max-width:1340px;margin:0 auto;
+  }
+  .frame{display:flex;flex-direction:column;align-items:center;width:var(--screen-w);}
+  .frame .label{font-size:13px;font-weight:700;color:#525A63;margin-bottom:16px;letter-spacing:.01em;}
+  .frame .label span{color:var(--muted-2);font-weight:600;}
+  .caption{
+    margin-top:18px;font-size:12.5px;color:var(--blue);font-weight:600;line-height:1.5;
+    text-align:center;max-width:300px;display:flex;gap:6px;justify-content:center;
+  }
+  .caption svg{flex:none;margin-top:1px;}
+
+  .dl-btn{
+    margin-top:16px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    font-family:inherit;font-size:13px;font-weight:700;color:#fff;background:var(--ink);
+    border:none;padding:11px 18px;border-radius:11px;transition:transform .12s ease,opacity .12s ease;
+    box-shadow:0 8px 18px -10px rgba(16,28,40,.5);
+  }
+  .dl-btn:hover{transform:translateY(-1px);}
+  .dl-btn:active{transform:translateY(0);}
+  .dl-btn:disabled{opacity:.55;cursor:default;}
+  .dl-all{
+    display:inline-flex;align-items:center;gap:8px;cursor:pointer;margin-top:18px;
+    font-family:inherit;font-size:13px;font-weight:700;color:var(--blue);background:#fff;
+    border:1.5px solid var(--blue);padding:10px 18px;border-radius:11px;
+  }
+  .dl-all:hover{background:var(--blue-tint);}
+
+  /* ---------- device ---------- */
+  .device{
+    width:var(--screen-w);height:var(--screen-h);
+    background:#fff;border-radius:46px;
+    border:10px solid #0E1114;
+    box-shadow:0 30px 60px -20px rgba(16,28,40,.4),0 8px 18px rgba(16,28,40,.18);
+    overflow:hidden;position:relative;
+    display:flex;flex-direction:column;
+  }
+  .screen{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#fff;}
+
+  /* ---------- top blue chrome ---------- */
+  .topbar{background:var(--blue);color:#fff;flex:none;}
+  .statusbar{
+    height:46px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 22px 0 26px;font-size:14.5px;font-weight:700;
+  }
+  .statusbar .icons{display:flex;align-items:center;gap:7px;}
+  .appbar{
+    height:52px;display:flex;align-items:center;position:relative;padding:0 16px;
+  }
+  .appbar .back{
+    width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+    border-radius:10px;flex:none;z-index:2;
+  }
+  .appbar .title{
+    position:absolute;left:0;right:0;text-align:center;
+    font-size:17px;font-weight:700;pointer-events:none;
+  }
+
+  .body{flex:1;overflow:hidden;padding:22px 20px;display:flex;flex-direction:column;}
+
+  /* ---------- landing (screen 2) ---------- */
+  .headline{font-size:21px;font-weight:800;line-height:1.28;letter-spacing:-.01em;margin:2px 0 8px;text-wrap:balance;}
+  .subhead{font-size:13.5px;color:var(--muted);line-height:1.5;margin:0 0 18px;}
+
+  .reward-row{display:flex;gap:12px;margin-bottom:22px;}
+  .reward{
+    flex:1;border:1px solid var(--line);border-radius:14px;padding:14px 16px 16px;
+    background:#F4F5F7;
+  }
+  .reward .rlabel{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:8px;}
+  .reward .rname{font-size:14.5px;color:var(--ink);font-weight:600;line-height:1.2;margin-bottom:7px;}
+  .reward .rmain{font-size:22px;font-weight:800;color:var(--blue);letter-spacing:-.02em;line-height:1.05;}
+
+  .sec-title{font-size:15px;font-weight:800;margin:2px 0 14px;}
+  .steps{display:flex;flex-direction:column;gap:14px;margin-bottom:20px;}
+  .step{display:flex;gap:13px;align-items:flex-start;}
+  .step .num{
+    width:25px;height:25px;border-radius:50%;background:var(--blue);color:#fff;
+    font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px;
+  }
+  .step .stext{font-size:13.5px;line-height:1.42;color:#2C3137;font-weight:500;}
+
+  .divider{height:1px;background:var(--line);margin:4px 0 18px;}
+  .choose-label{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em;margin-bottom:12px;}
+
+  .share-row{display:flex;gap:12px;}
+  .share-btn{
+    flex:1;border:1.5px solid var(--blue);border-radius:16px;background:#fff;
+    padding:16px 12px 14px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:9px;cursor:pointer;
+  }
+  .share-btn .ico{
+    width:42px;height:42px;border-radius:12px;background:var(--blue-tint);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .share-btn .sb-title{font-size:13.5px;font-weight:700;color:var(--blue);line-height:1.2;}
+  .share-btn .sb-sub{font-size:11px;color:var(--muted);font-weight:500;line-height:1.3;}
+
+  /* ---------- whatsapp (2A) ---------- */
+  .mini-label{font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 12px;}
+  .wa-card{
+    border-radius:14px;overflow:hidden;border:1px solid var(--line);margin-bottom:18px;
+    box-shadow:0 6px 16px -10px rgba(16,28,40,.18);
+  }
+  .wa-head{background:var(--wa-green);color:#fff;display:flex;align-items:center;gap:11px;padding:11px 14px;}
+  .wa-avatar{width:34px;height:34px;border-radius:50%;background:#cfd8d6;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;flex:none;}
+  .wa-name{font-size:14px;font-weight:700;}
+  .wa-status{font-size:10.5px;opacity:.7;font-weight:500;margin-top:1px;}
+  .wa-wall{
+    background-color:var(--wa-wall);
+    background-image:radial-gradient(rgba(7,94,84,.05) 1px,transparent 1px);
+    background-size:14px 14px;
+    padding:16px 12px;display:flex;justify-content:flex-end;
+  }
+  .wa-bubble{
+    background:var(--wa-bubble);border-radius:12px 12px 4px 12px;max-width:90%;
+    padding:7px 8px 6px;box-shadow:0 1px 1px rgba(16,28,40,.12);position:relative;
+  }
+  .wa-text{font-size:12.5px;line-height:1.42;color:#1C2B28;padding:2px 4px 0;}
+  .wa-link{
+    margin:7px 0 2px;background:#fff;border-radius:8px;overflow:hidden;border:1px solid rgba(0,0,0,.05);
+  }
+  .wa-link .lk-strip{height:4px;background:var(--blue);}
+  .wa-link .lk-body{padding:8px 10px;}
+  .wa-link .lk-title{font-size:12px;font-weight:700;color:var(--ink);}
+  .wa-link .lk-sub{font-size:11px;color:#5C636A;margin-top:2px;font-weight:500;}
+  .wa-link .lk-url{font-size:10px;color:var(--muted-2);margin-top:4px;}
+  .wa-meta{display:flex;align-items:center;justify-content:flex-end;gap:3px;padding:3px 4px 0;}
+  .wa-time{font-size:10px;color:#7A8783;font-weight:500;}
+
+  .infobox{
+    background:var(--field);border-radius:12px;padding:12px 13px;
+    display:flex;gap:9px;align-items:flex-start;margin-bottom:20px;
+  }
+  .infobox .ib-ico{flex:none;margin-top:1px;}
+  .infobox p{margin:0;font-size:12.5px;color:#5C636A;line-height:1.45;font-weight:500;}
+
+  .copy-label{font-size:12.5px;font-weight:700;color:var(--ink);margin:0 0 9px;}
+  .copy-field{
+    display:flex;align-items:center;gap:10px;background:var(--field);
+    border:1px solid var(--line);border-radius:12px;padding:0 6px 0 14px;height:48px;margin-bottom:auto;
+  }
+  .copy-field .url{flex:1;font-size:13px;color:#3A4046;font-weight:600;letter-spacing:.01em;}
+  .copy-field .copy-btn{
+    width:36px;height:36px;border-radius:9px;background:#fff;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;flex:none;
+  }
+
+  /* ---------- qr (2B) ---------- */
+  .qr-wrap{flex:1;display:flex;flex-direction:column;align-items:center;}
+  .qr-title{font-size:18px;font-weight:800;text-align:center;margin:6px 0 5px;letter-spacing:-.01em;}
+  .qr-sub{font-size:13px;color:var(--muted);text-align:center;margin:0 0 26px;font-weight:500;}
+  .qr-box{
+    width:210px;height:210px;border:2px solid var(--blue);border-radius:22px;
+    background:#fff;display:flex;align-items:center;justify-content:center;
+    padding:16px;box-shadow:0 12px 28px -16px rgba(26,155,232,.55);
+  }
+  .qr-box canvas{width:100%;height:100%;display:block;border-radius:6px;}
+  .qr-code{
+    font-size:24px;font-weight:800;letter-spacing:.22em;margin:24px 0 8px;padding-left:.22em;
+  }
+  .qr-note{font-size:12.5px;color:var(--muted);text-align:center;font-weight:500;line-height:1.45;margin:0 0 28px;}
+  .qr-note b{color:#5C636A;}
+
+  /* ---------- section header (canvas) ---------- */
+  .section-title{
+    max-width:1340px;margin:0 auto 28px;font-size:13px;font-weight:800;
+    letter-spacing:.12em;text-transform:uppercase;color:#525A63;
+    display:flex;align-items:center;gap:14px;
+  }
+  .section-title::after{content:'';flex:1;height:1px;background:var(--line);}
+  .section-title.sp{margin-top:72px;}
+
+  /* ---------- tracking (screen 3) ---------- */
+  .stat-row{display:flex;gap:12px;margin-bottom:22px;}
+  .stat-card{flex:1;border:1px solid var(--line);border-radius:14px;padding:14px 16px 16px;background:#F4F5F7;}
+  .stat-card .slabel{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:8px;}
+  .stat-card .svalue{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.02;}
+  .stat-card .ssub{font-size:12px;color:var(--blue);font-weight:600;margin-top:6px;}
+
+  .ref-list{display:flex;flex-direction:column;gap:12px;}
+  .ref-card{border:1px solid var(--line);border-radius:16px;padding:14px 15px 15px;background:#fff;box-shadow:0 4px 12px -10px rgba(16,28,40,.2);}
+  .ref-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
+  .ref-name{font-size:14px;font-weight:700;color:var(--ink);}
+  .badge{font-size:11px;font-weight:700;padding:4px 11px;border-radius:999px;letter-spacing:.01em;}
+  .badge-wait{background:#FEF1CF;color:#A9750A;}
+  .badge-reg{background:#E1F1FE;color:#1683C7;}
+  .badge-active{background:#D9F2E2;color:#1E8A4D;}
+  .track{height:5px;border-radius:999px;background:#E6E9ED;overflow:hidden;margin-bottom:14px;}
+  .track .fill{height:100%;border-radius:999px;background:var(--blue);}
+  .milestones{display:flex;margin-bottom:13px;}
+  .ms{flex:1;text-align:center;}
+  .ms .d{width:11px;height:11px;border-radius:50%;background:#CDD3DA;margin:0 auto 7px;display:block;}
+  .ms .ml{font-size:10px;color:var(--muted-2);font-weight:600;line-height:1.1;display:block;}
+  .ms.done .d{background:var(--blue);box-shadow:0 0 0 3px rgba(26,155,232,.16);}
+  .ms.done .ml{color:#3A4046;}
+  .ref-info{font-size:11.5px;line-height:1.45;font-weight:500;color:var(--muted);margin:0;}
+  .ref-info.blue{color:var(--blue);}
+  .ref-info.blue b{font-weight:800;}
+
+  /* ---------- notifikasi (screen 4) ---------- */
+  .notif-sec{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em;margin:2px 0 13px;}
+  .notif-sec.sp{margin-top:22px;}
+  .notif-card{display:flex;gap:13px;padding:14px;border-radius:16px;margin-bottom:12px;position:relative;}
+  .notif-card.unread{background:#E6F4FF;border:1px solid #C2E2FA;}
+  .notif-card.read{background:#fff;border:1px solid var(--line);}
+  .notif-ico{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;}
+  .notif-ico.blue{background:var(--blue);}
+  .notif-ico.gray{background:#E6E9ED;}
+  .notif-body{flex:1;min-width:0;}
+  .notif-title{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:4px;padding-right:16px;}
+  .notif-card.read .notif-title{font-weight:600;color:#3A4046;}
+  .notif-sub{font-size:12px;color:#5C636A;line-height:1.45;font-weight:500;margin:0 0 8px;}
+  .notif-time{font-size:11px;color:var(--muted-2);font-weight:600;}
+  .notif-dot{position:absolute;top:15px;right:15px;width:9px;height:9px;border-radius:50%;background:var(--blue);}
+
+  /* ---------- push banner (screen 4A) ---------- */
+  .push-cap{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px;align-self:flex-start;padding-left:2px;}
+  .push-banner{
+    width:var(--screen-w);background:#28282B;border-radius:20px;padding:14px 15px;
+    display:flex;gap:12px;align-items:flex-start;margin-bottom:26px;
+    box-shadow:0 18px 34px -18px rgba(16,28,40,.6);
+  }
+  .push-icon{width:38px;height:38px;border-radius:10px;background:var(--blue);display:flex;align-items:center;justify-content:center;flex:none;}
+  .push-body{flex:1;color:#fff;min-width:0;}
+  .push-app{font-size:11px;color:#9A9DA3;font-weight:600;margin-bottom:3px;}
+  .push-title{font-size:13.5px;font-weight:700;line-height:1.3;}
+  .push-text{font-size:12px;color:#C9CCD1;line-height:1.42;margin-top:3px;font-weight:500;}
+
+  /* ---------- merchant hero (screen 5 & 8) ---------- */
+  .hero{background:var(--blue);color:#fff;padding:8px 22px 26px;}
+  .invite-badge{
+    display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.32);color:#fff;font-size:12px;font-weight:600;
+    padding:6px 13px;border-radius:999px;margin-bottom:16px;
+  }
+  .hero-h{font-size:21px;font-weight:800;line-height:1.28;letter-spacing:-.01em;margin:0 0 11px;text-wrap:balance;}
+  .hero-sub{font-size:13.5px;color:rgba(255,255,255,.92);line-height:1.45;margin:0;font-weight:500;}
+
+  .benefit-label{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 16px;}
+  .benefit{display:flex;gap:13px;align-items:center;margin-bottom:16px;}
+  .benefit .bico{width:42px;height:42px;border-radius:12px;background:var(--blue-tint);display:flex;align-items:center;justify-content:center;flex:none;}
+  .benefit .btxt{font-size:13.5px;color:#2C3137;font-weight:500;line-height:1.35;}
+  .benefit .btxt b{color:var(--blue);font-weight:700;}
+
+  /* ---------- form (screen 6) ---------- */
+  .appbar.lr{justify-content:flex-start;}
+  .appbar.lr .title-l{flex:1 1 auto;min-width:0;font-size:15.5px;font-weight:700;color:#fff;margin-left:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .appbar .step-ind{margin-left:auto;padding-left:10px;font-size:13px;font-weight:700;color:rgba(255,255,255,.92);white-space:nowrap;flex:none;}
+  .hprogress{height:4px;background:rgba(255,255,255,.28);}
+  .hprogress .hfill{height:100%;background:#fff;}
+
+  .form-label{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 9px;}
+  .form-label.sp{margin-top:20px;}
+  .text-input{
+    width:100%;height:48px;border:1px solid var(--line);border-radius:12px;background:#fff;
+    padding:0 14px;font-family:inherit;font-size:13.5px;color:var(--ink);
+  }
+  .text-input::placeholder{color:var(--muted-2);}
+  .cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+  .cat-card{
+    border:1.5px solid var(--line);border-radius:14px;background:#fff;padding:15px 12px;
+    display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;cursor:pointer;
+  }
+  .cat-card .ctile{width:44px;height:44px;border-radius:12px;background:var(--blue-tint);color:var(--blue);display:flex;align-items:center;justify-content:center;}
+  .cat-card.sel .ctile{background:var(--blue);color:#fff;}
+  .cat-card .clabel{font-size:12.5px;font-weight:600;color:#3A4046;}
+  .cat-card.sel{border-color:var(--blue);background:var(--blue-tint);}
+  .cat-card.sel .clabel{color:var(--blue);font-weight:700;}
+  .loc-field{
+    display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);
+    border-radius:12px;height:48px;padding:0 14px;cursor:pointer;
+  }
+  .loc-field span{font-size:13.5px;color:var(--blue);font-weight:600;}
+
+  /* ---------- kyc (screen 7) ---------- */
+  .kyc-label{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 11px;}
+  .kyc-label.sp{margin-top:20px;}
+  .upload{
+    border:1.5px dashed #B9D3E8;border-radius:14px;background:#F8FBFD;padding:22px 14px;
+    display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:11px;cursor:pointer;
+  }
+  .upload .utext{font-size:12.5px;color:var(--muted);font-weight:600;}
+  .tipbox{display:flex;gap:9px;align-items:flex-start;background:var(--blue-tint);border-radius:11px;padding:11px 12px;}
+  .tipbox p{margin:0;font-size:11.5px;color:#2E6E96;line-height:1.4;font-weight:500;}
+  .tipbox .tip-ico{flex:none;margin-top:1px;}
+
+  /* ---------- success (screen 8) ---------- */
+  .success-hero{background:var(--blue);color:#fff;padding:8px 24px 28px;text-align:center;}
+  .check-badge{
+    width:66px;height:66px;border-radius:50%;background:#fff;
+    display:flex;align-items:center;justify-content:center;margin:6px auto 18px;
+    box-shadow:0 8px 18px -8px rgba(0,0,0,.25);
+  }
+  .success-h{font-size:18.5px;font-weight:800;line-height:1.3;margin:0 0 9px;text-wrap:balance;}
+  .success-sub{font-size:13px;color:rgba(255,255,255,.92);margin:0;font-weight:500;}
+
+  .reward-card{
+    display:flex;align-items:center;gap:13px;background:var(--blue-tint);border:1px solid #C2E2FA;
+    border-radius:16px;padding:14px 15px;margin-bottom:13px;
+  }
+  .reward-card .rc-ico{width:42px;height:42px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;flex:none;}
+  .reward-card .rc-label{font-size:11.5px;color:#5C636A;font-weight:600;white-space:nowrap;}
+  .reward-card .rc-val{font-size:20px;font-weight:800;color:var(--blue);letter-spacing:-.02em;margin:2px 0;}
+  .reward-card .rc-sub{font-size:11px;color:var(--muted);font-weight:500;}
+
+  .qris-card{border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center;margin-bottom:13px;}
+  .qris-card .qc-label{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:12px;}
+  .qris-card .qc-box{width:128px;height:128px;border:2px solid var(--blue);border-radius:16px;padding:10px;margin:0 auto 12px;}
+  .qris-card .qc-box canvas{width:100%;height:100%;display:block;border-radius:4px;}
+  .qris-card .qc-name{font-size:14px;font-weight:700;color:var(--ink);}
+
+  .next-card{display:flex;align-items:center;gap:12px;background:var(--field);border-radius:14px;padding:13px 14px;margin-bottom:auto;}
+  .next-card .nc-text{flex:1;font-size:12px;color:#3A4046;font-weight:500;line-height:1.35;}
+  .next-card .nc-val{font-size:14px;font-weight:800;color:var(--blue);flex:none;}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    width:100%;height:54px;border-radius:15px;border:none;cursor:pointer;
+    font-family:inherit;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px;
+  }
+  .btn-primary{background:var(--blue);color:#fff;box-shadow:0 10px 22px -10px rgba(26,155,232,.7);}
+  .btn-outline{background:#fff;color:var(--blue);border:1.5px solid var(--blue);margin-top:12px;}
+  .btn-stack{margin-top:auto;}
+</style>
+</head>
+<body>
+
+  <header class="canvas-head">
+    <span class="kicker"><span class="dot"></span>DANA Bisnis · Program Referral</span>
+    <h1>QRISin Saja — Batch 1</h1>
+    <p>Alur ajak pedagang ke DANA Bisnis. High-fidelity, 390×844px, Bahasa Indonesia. Referrer membagikan link/QR — pedagang dapat QRIS gratis, referrer dapat saldo.</p>
+  </header>
+
+  <div class="section-title">Batch 1 · Onboarding &amp; Berbagi</div>
+
+  <div class="row">
+
+    <!-- ============ SCREEN 2 — LANDING ============ -->
+    <div class="frame">
+      <div class="label">Screen 2 <span>— Landing Page Referrer</span></div>
+      <div class="device" data-screen-label="Screen 2 — Landing" data-export="QRISin-Saja-Screen-2-Landing">
+        <div class="screen">
+          <div class="topbar">
+            <div class="statusbar">
+              <span>9:41</span>
+              <span class="icons" data-statusicons></span>
+            </div>
+            <div class="appbar">
+              <div class="back" data-back></div>
+              <div class="title">QRISin Saja</div>
+            </div>
+          </div>
+          <div class="body">
+            <h2 class="headline">Ajak pedagang yang kamu kenal bergabung ke DANA Bisnis</h2>
+            <p class="subhead">Kamu dapat reward. Pedagang yang kamu ajak langsung punya QRIS sendiri, gratis.</p>
+
+            <div class="reward-row">
+              <div class="reward">
+                <div class="rlabel">Kamu dapat</div>
+                <div class="rname">Saldo DANA</div>
+                <div class="rmain">Rp25.000</div>
+              </div>
+              <div class="reward">
+                <div class="rlabel">Pedagang dapat</div>
+                <div class="rname">QRIS + saldo</div>
+                <div class="rmain">Rp40.000</div>
+              </div>
+            </div>
+
+            <div class="sec-title">Cara kerjanya</div>
+            <div class="steps">
+              <div class="step"><div class="num">1</div><div class="stext">Bagikan link atau QR ke pedagang yang kamu kenal</div></div>
+              <div class="step"><div class="num">2</div><div class="stext">Mereka daftar DANA Bisnis dalam 5 menit</div></div>
+              <div class="step"><div class="num">3</div><div class="stext">Reward masuk ke saldo DANA kamu otomatis</div></div>
+            </div>
+
+            <div class="divider"></div>
+            <div class="choose-label">Pilih cara berbagi</div>
+            <div class="share-row">
+              <div class="share-btn">
+                <div class="ico" data-ico="wa"></div>
+                <div class="sb-title">Kirim via WhatsApp</div>
+                <div class="sb-sub">Link + pesan otomatis</div>
+              </div>
+              <div class="share-btn">
+                <div class="ico" data-ico="qr"></div>
+                <div class="sb-title">Tampilkan QR Code</div>
+                <div class="sb-sub">Pedagang tinggal scan</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="#1A9BE8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Semua info + aksi dalam 1 screen</div>
+      <button class="dl-btn" data-dl>Download PNG</button>
+    </div>
+
+    <!-- ============ SCREEN 2A — WHATSAPP ============ -->
+    <div class="frame">
+      <div class="label">Screen 2A <span>— Jalur WhatsApp</span></div>
+      <div class="device" data-screen-label="Screen 2A — WhatsApp" data-export="QRISin-Saja-Screen-2A-WhatsApp">
+        <div class="screen">
+          <div class="topbar">
+            <div class="statusbar">
+              <span>9:41</span>
+              <span class="icons" data-statusicons></span>
+            </div>
+            <div class="appbar">
+              <div class="back" data-back></div>
+              <div class="title">Bagikan ke WhatsApp</div>
+            </div>
+          </div>
+          <div class="body">
+            <p class="mini-label">Pratinjau pesan yang akan dikirim</p>
+
+            <div class="wa-card">
+              <div class="wa-head">
+                <div class="wa-avatar" data-avatar></div>
+                <div>
+                  <div class="wa-name">Kontak kamu</div>
+                  <div class="wa-status">online</div>
+                </div>
+              </div>
+              <div class="wa-wall">
+                <div class="wa-bubble">
+                  <div class="wa-text">Halo! Aku mau kenalin DANA Bisnis buat warungmu. Gratis punya QRIS sendiri, bisa terima pembayaran non tunai dari pelanggan. Daftar 5 menit aja!</div>
+                  <div class="wa-link">
+                    <div class="lk-strip"></div>
+                    <div class="lk-body">
+                      <div class="lk-title">QRISin Saja · DANA Bisnis</div>
+                      <div class="lk-sub">QRIS gratis + saldo DANA Rp15.000</div>
+                      <div class="lk-url">dana.id</div>
+                    </div>
+                  </div>
+                  <div class="wa-meta">
+                    <span class="wa-time">09:41</span>
+                    <svg width="16" height="11" viewBox="0 0 18 11" fill="none"><path d="M1 6l2.5 2.5L9 3" stroke="#34B7F1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 6l2.5 2.5L15 3" stroke="#34B7F1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="infobox">
+              <span class="ib-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.2" stroke="#8A9099" stroke-width="1.7"/><path d="M12 11v5" stroke="#8A9099" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="7.7" r="1.15" fill="#8A9099"/></svg></span>
+              <p>Kamu akan diarahkan ke WhatsApp untuk memilih kontak yang ingin kamu ajak.</p>
+            </div>
+
+            <p class="copy-label">Atau salin link saja</p>
+            <div class="copy-field">
+              <span class="url">dana.id/qrisinaja/ref/HENDRA123</span>
+              <span class="copy-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="8.5" y="8.5" width="11" height="11" rx="2.4" stroke="#1A9BE8" stroke-width="1.8"/><path d="M5.5 15.5A2 2 0 0 1 4 13.6V6a2 2 0 0 1 2-2h7.6a2 2 0 0 1 1.9 1.5" stroke="#1A9BE8" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </span>
+            </div>
+
+            <div class="btn-stack">
+              <button class="btn btn-primary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.2A9.6 9.6 0 0 0 3.9 16.8L2.6 21.4l4.7-1.2A9.6 9.6 0 1 0 12 2.2Zm0 1.7a7.9 7.9 0 0 1 6.4 12.5 7.9 7.9 0 0 1-9.9 2.5l-.4-.2-2.8.7.7-2.7-.2-.4A7.9 7.9 0 0 1 12 3.9Zm-2.7 3.4c-.2 0-.5 0-.7.4-.3.3-1 1-1 2.4s1 2.8 1.2 3 2 3.1 4.9 4.3c2.4 1 2.9.8 3.4.8.5 0 1.6-.7 1.9-1.3.2-.7.2-1.2.1-1.3l-.6-.3-1.6-.8c-.2-.1-.4-.1-.6.1l-.8 1c-.2.2-.3.2-.6.1a6.5 6.5 0 0 1-1.9-1.2 7.3 7.3 0 0 1-1.3-1.7c-.1-.2 0-.4.1-.5l.5-.5.3-.6c.1-.2 0-.4 0-.5l-.8-2c-.2-.5-.4-.4-.6-.4h-.6Z"/></svg>
+                Buka WhatsApp Sekarang
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="#1A9BE8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Pesan generic — referrer pilih kontak sendiri di WhatsApp</div>
+      <button class="dl-btn" data-dl>Download PNG</button>
+    </div>
+
+    <!-- ============ SCREEN 2B — QR CODE ============ -->
+    <div class="frame">
+      <div class="label">Screen 2B <span>— QR Code Referral</span></div>
+      <div class="device" data-screen-label="Screen 2B — QR Code" data-export="QRISin-Saja-Screen-2B-QRCode">
+        <div class="screen">
+          <div class="topbar">
+            <div class="statusbar">
+              <span>9:41</span>
+              <span class="icons" data-statusicons></span>
+            </div>
+            <div class="appbar">
+              <div class="back" data-back></div>
+              <div class="title">QR Code Referral</div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="qr-wrap">
+              <h2 class="qr-title">Tunjukkan ke pedagang untuk di-scan</h2>
+              <p class="qr-sub">atau cetak dan tempel di toko kamu</p>
+
+              <div class="qr-box">
+                <canvas data-qr width="320" height="320"></canvas>
+              </div>
+
+              <div class="qr-code">HENDRA123</div>
+              <p class="qr-note">Kode unik milik kamu, <b>berlaku 30 hari</b></p>
+
+              <div class="btn-stack" style="width:100%;">
+                <button class="btn btn-primary">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v11m0 0l-4-4m4 4l4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+                  Simpan ke Galeri
+                </button>
+                <button class="btn btn-outline">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 8V4h10v4" stroke="#1A9BE8" stroke-width="1.9" stroke-linejoin="round"/><rect x="4" y="8" width="16" height="9" rx="2" stroke="#1A9BE8" stroke-width="1.9"/><rect x="7.5" y="14" width="9" height="6" rx="1" stroke="#1A9BE8" stroke-width="1.9"/><circle cx="16.5" cy="11" r="1" fill="#1A9BE8"/></svg>
+                  Cetak QR Code
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="#1A9BE8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>QR dinamis unik per user — bisa disimpan atau dicetak</div>
+      <button class="dl-btn" data-dl>Download PNG</button>
+    </div>
+
+  </div>
+
+  <div class="section-title sp">Batch 2 · Tracking &amp; Notifikasi</div>
+
+  <div class="row">
+
+    <!-- ============ SCREEN 3 — TRACKING STATUS ============ -->
+    <div class="frame">
+      <div class="label">Screen 3 <span>— Tracking Status</span></div>
+      <div class="device" data-screen-label="Screen 3 — Tracking" data-export="QRISin-Saja-Screen-3-Tracking">
+        <div class="screen">
+          <div class="topbar">
+            <div class="statusbar"><span>9:41</span><span class="icons" data-statusicons></span></div>
+            <div class="appbar"><div class="back" data-back></div><div class="title">Status Referral Saya</div></div>
+          </div>
+          <div class="body">
+            <div class="stat-row">
+              <div class="stat-card">
+                <div class="slabel">Total diajak</div>
+                <div class="svalue">3</div>
+                <div class="ssub">pedagang</div>
+              </div>
+              <div class="stat-card">
+                <div class="slabel">Total reward</div>
+                <div class="svalue">Rp30.000</div>
+                <div class="ssub">masuk ke saldo DANA</div>
+              </div>
+            </div>
+
+            <div class="sec-title">Daftar referral kamu</div>
+            <div class="ref-list">
+
+              <div class="ref-card">
+                <div class="ref-head"><span class="ref-name">Pedagang #1</span><span class="badge badge-wait">Menunggu</span></div>
+                <div class="track"><div class="fill" style="width:10%;"></div></div>
+                <div class="milestones">
+                  <div class="ms done"><span class="d"></span><span class="ml">Link dibuka</span></div>
+                  <div class="ms"><span class="d"></span><span class="ml">Daftar</span></div>
+                  <div class="ms"><span class="d"></span><span class="ml">KYC</span></div>
+                  <div class="ms"><span class="d"></span><span class="ml">Transaksi</span></div>
+                </div>
+                <p class="ref-info">Rp5.000 akan masuk ke saldo DANA kamu setelah pedagang selesai daftar.</p>
+              </div>
+
+              <div class="ref-card">
+                <div class="ref-head"><span class="ref-name">Pedagang #2</span><span class="badge badge-reg">Terdaftar</span></div>
+                <div class="track"><div class="fill" style="width:60%;"></div></div>
+                <div class="milestones">
+                  <div class="ms done"><span class="d"></span><span class="ml">Link dibuka</span></div>
+                  <div class="ms done"><span class="d"></span><span class="ml">Daftar</span></div>
+                  <div class="ms done"><span class="d"></span><span class="ml">KYC</span></div>
+                  <div class="ms"><span class="d"></span><span class="ml">Transaksi</span></div>
+                </div>
+                <p class="ref-info blue">Rp5.000 sudah masuk ke saldo DANA kamu. Rp20.000 lagi menunggu 3 transaksi.</p>
+              </div>
+
+              <div class="ref-card">
+                <div class="ref-head"><span class="ref-name">Pedagang #3</span><span class="badge badge-active">Aktif</span></div>
+                <div class="track"><div class="fill" style="width:100%;"></div></div>
+                <div class="milestones">
+                  <div class="ms done"><span class="d"></span><span class="ml">Link dibuka</span></div>
+                  <div class="ms done"><span class="d"></span><span class="ml">Daftar</span></div>
+                  <div class="ms done"><span class="d"></span><span class="ml">KYC</span></div>
+                  <div class="ms done"><span class="d"></span><span class="ml">Transaksi</span></div>
+                </div>
+                <p class="ref-info blue"><b>Total Rp25.000 sudah masuk ke saldo DANA kamu</b></p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="#1A9BE8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Progress tiap referral terlihat jelas, referrer tahu persis statusnya</div>
+      <button class="dl-btn" data-dl>Download PNG</button>
+    </div>
+
+    <!-- ============ SCREEN 4 — NOTIFIKASI REWARD ============ -->
+    <div class="frame">
+      <div class="label">Screen 4 <span>— Notifikasi Reward</span></div>
+
+      <div class="push-cap">A · Push notification (otomatis)</div>
+      <div class="push-banner">
+        <div class="push-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#fff"/><text x="12" y="15.8" text-anchor="middle" font-size="9.5" font-weight="800" fill="#28282B" font-family="'Plus Jakarta Sans',sans-serif">Rp</text></svg>
+        </div>
+        <div class="push-body">
+          <div class="push-app">QRISin Saja · Baru saja</div>
+          <div class="push-title">Rp5.000 masuk ke saldo DANA kamu!</div>
+          <div class="push-text">Pedagang yang kamu ajak berhasil daftar DANA Bisnis.</div>
+        </div>
+      </div>
+
+      <div class="device" data-screen-label="Screen 4 — Notifikasi" data-export="QRISin-Saja-Screen-4-Notifikasi">
+        <div class="screen">
+          <div class="topbar">
+            <div class="statusbar"><span>9:41</span><span class="icons" data-statusicons></span></div>
+            <div class="appbar"><div class="back" data-back></div><div class="title">Notifikasi</div></div>
+          </div>
+          <div class="body">
+            <div class="notif-sec">Terbaru</div>
+
+            <div class="notif-card unread">
+              <div class="notif-ico blue">
+                <svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#FBC02D"/><text x="12" y="15.8" text-anchor="middle" font-size="9.5" font-weight="800" fill="#7A5200" font-family="'Plus Jakarta Sans',sans-serif">Rp</text></svg>
+              </div>
+              <div class="notif-body">
+                <div class="notif-title">Rp5.000 masuk ke saldo DANA kamu!</div>
+                <p class="notif-sub">Pedagang yang kamu ajak berhasil daftar DANA Bisnis. Tunggu mereka bertransaksi untuk dapat Rp20.000 lagi.</p>
+                <span class="notif-time">5 menit lalu</span>
+              </div>
+              <span class="notif-dot"></span>
+            </div>
+
+            <div class="notif-card unread">
+              <div class="notif-ico blue">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 4h10v3.5a5 5 0 0 1-10 0V4Z" fill="#FBC02D"/><path d="M7 5.2H4.6a2.4 2.4 0 0 0 2.6 2.4M17 5.2h2.4a2.4 2.4 0 0 1-2.6 2.4" stroke="#FBC02D" stroke-width="1.5" stroke-linecap="round"/><path d="M12 12.5v3" stroke="#FBC02D" stroke-width="2" stroke-linecap="round"/><path d="M8.8 19h6.4l-.7-2.6H9.5L8.8 19Z" fill="#FBC02D"/></svg>
+              </div>
+              <div class="notif-body">
+                <div class="notif-title">Rp20.000 masuk ke saldo DANA kamu!</div>
+                <p class="notif-sub">Pedagang yang kamu ajak sudah bertransaksi 3 kali. Reward penuh sudah masuk ke saldo DANA kamu.</p>
+                <span class="notif-time">2 jam lalu</span>
+              </div>
+              <span class="notif-dot"></span>
+            </div>
+
+            <div class="notif-sec sp">Sebelumnya</div>
+
+            <div class="notif-card read">
+              <div class="notif-ico gray">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 4a5 5 0 0 0-5 5v3.4L5.5 15h13L17 12.4V9a5 5 0 0 0-5-5Z" stroke="#8A9099" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 18a2 2 0 0 0 4 0" stroke="#8A9099" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </div>
+              <div class="notif-body">
+                <div class="notif-title">Pedagang yang kamu ajak belum daftar</div>
+                <p class="notif-sub">Sudah 3 hari sejak kamu berbagi link. Mau ingatkan lagi?</p>
+                <span class="notif-time">3 hari lalu</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="#1A9BE8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Push notif otomatis + in-app notifikasi, ada reminder jika pedagang belum daftar</div>
+      <button class="dl-btn" data-dl>Download PNG</button>
+    </div>
+
+  </div>
+
+  <div class="section-title sp">Batch 3 · Daftar (Sisi Pedagang)</div>
+
+  <div class="row" id="b3row">
+
+    <!-- ============ SCREEN 5 — LANDING BU SARI ============ -->
+    <div class="frame">
+      <div class="label">Screen 5 <span>— Landing Page Bu Sari</span></div>
+      <div class="device" data-screen-label="Screen 5 — Landing Merchant" data-export="QRISin-Saja-Screen-5-Landing-Merchant">
+        <div class="screen">
+          <div class="topbar">
+            <div class="statusbar"><span>9:41</span><span class="icons" data-statusicons></span></div>
+          </div>
+          <div class="hero">
+            <span class="invite-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="#fff"/></svg>
+              Rina mengajakmu bergabung
+            </span>
+            <h2 class="hero-h">Warungmu bisa terima pembayaran non tunai dari pelanggan, gratis!</h2>
+            <p class="hero-sub">Daftar DANA Bisnis sekarang, 5 menit selesai.</p>
+          </div>
+          <div class="body">
+            <p class="benefit-label">Yang kamu dapat:</p>
+
+            <div class="benefit">
+              <div class="bico"><svg width="22" height="22" viewBox="0 0 24 24" fill="#1A9BE8"><path d="M3 3h7v7H3V3Zm2 2v3h3V5H5Zm9-2h7v7h-7V3Zm2 2v3h3V5h-3ZM3 14h7v7H3v-7Zm2 2v3h3v-3H5Zm9 0h2v2h-2v-2Zm2 2h2v2h-2v-2Zm2-2h2v2h-2v-2Zm0 4h2v1h-2v-1Zm-4 0h2v1h-2v-1Zm2-6h2v2h-2v-2Z"/></svg></div>
+              <div class="btxt">QRIS sendiri, <b>gratis</b></div>
+            </div>
+            <div class="benefit">
+              <div class="bico"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#1A9BE8"/><text x="12" y="15.8" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff" font-family="'Plus Jakarta Sans',sans-serif">Rp</text></svg></div>
+              <div class="btxt">Saldo DANA <b>Rp15.000</b> begitu akun aktif</div>
+            </div>
+            <div class="benefit">
+              <div class="bico"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#1A9BE8"/><text x="12" y="15.8" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff" font-family="'Plus Jakarta Sans',sans-serif">Rp</text></svg></div>
+              <div class="btxt">Saldo DANA <b>Rp25.000</b> lagi setelah 3 transaksi</div>
+            </div>
+
+            <div class="btn-stack">
+              <button class="btn btn-primary">Daftar Sekarang, Gratis</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="#1A9BE8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Nama Rina tampil, trust terbangun. Benefit jelas, 1 CTA langsung aksi</div>
+      <button class="dl-btn" data-dl>Download PNG</button>
+    </div>
+
+    <!-- ============ SCREEN 6 — FORM PENDAFTARAN ============ -->
+    <div class="frame">
+      <div class="label">Screen 6 <span>— Form Pendaftaran</span></div>
+      <div class="device" data-screen-label="Screen 6 — Form" data-export="QRISin-Saja-Screen-6-Form">
+        <div class="screen">
+          <div class="topbar">
+            <div class="statusbar"><span>9:41</span><span class="icons" data-statusicons></span></div>
+            <div class="appbar lr">
+              <div class="back" data-back></div>
+              <div class="title-l">Daftar DANA Bisnis</div>
+              <div class="step-ind">1 / 2</div>
+            </div>
+            <div class="hprogress"><div class="hfill" style="width:50%;"></div></div>
+          </div>
+          <div class="body">
+            <p class="form-label">Nama usahamu</p>
+            <input class="text-input" type="text" placeholder="Contoh: Warung Bu Sari" readonly>
+
+            <p class="form-label sp">Jenis usaha</p>
+            <div class="cat-grid">
+              <div class="cat-card sel">
+                <span class="ctile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3.5 10.8h17a8.5 8.5 0 0 1-17 0Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.8 7.2c0-1 .8-1.5.8-2.6M12 7.2c0-1 .8-1.5.8-2.6M15.2 7.2c0-1 .8-1.5.8-2.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M2.5 20.5h19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                <span class="clabel">Makanan &amp; Minuman</span>
+              </div>
+              <div class="cat-card">
+                <span class="ctile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8.6 4 5 6.6 7.1 9.2 8.7 8v11.5h6.6V8l1.6 1.2 2.1-2.6L15.4 4a3.4 3.4 0 0 1-6.8 0Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+                <span class="clabel">Fashion</span>
+              </div>
+              <div class="cat-card">
+                <span class="ctile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 4h2l1.6 10.4h10.1L19 7.2H6.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8.6" cy="18.6" r="1.5" fill="currentColor"/><circle cx="16" cy="18.6" r="1.5" fill="currentColor"/></svg></span>
+                <span class="clabel">Kelontong</span>
+              </div>
+              <div class="cat-card">
+                <span class="ctile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="6.2" cy="7" r="2.3" stroke="currentColor" stroke-width="1.6"/><circle cx="6.2" cy="17" r="2.3" stroke="currentColor" stroke-width="1.6"/><path d="M8.2 8.3 19 18M8.2 15.7 19 6M8.4 12H10.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="clabel">Kecantikan</span>
+              </div>
+            </div>
+
+            <p class="form-label sp">Lokasi usaha</p>
+            <div class="loc-field">
+              <span>Gunakan lokasi saat ini</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11Z" stroke="#1A9BE8" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4" stroke="#1A9BE8" stroke-width="1.8"/></svg>
+            </div>
+
+            <div class="btn-stack">
+              <button class="btn btn-primary">Lanjut</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="#1A9BE8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>3 field saja: nama, jenis usaha (kartu visual), lokasi GPS otomatis</div>
+      <button class="dl-btn" data-dl>Download PNG</button>
+    </div>
+
+    <!-- ============ SCREEN 7 — KYC ============ -->
+    <div class="frame">
+      <div class="label">Screen 7 <span>— Verifikasi Identitas (KYC)</span></div>
+      <div class="device" data-screen-label="Screen 7 — KYC" data-export="QRISin-Saja-Screen-7-KYC">
+        <div class="screen">
+          <div class="topbar">
+            <div class="statusbar"><span>9:41</span><span class="icons" data-statusicons></span></div>
+            <div class="appbar lr">
+              <div class="back" data-back></div>
+              <div class="title-l">Verifikasi Identitas</div>
+              <div class="step-ind">2 / 2</div>
+            </div>
+            <div class="hprogress"><div class="hfill" style="width:100%;"></div></div>
+          </div>
+          <div class="body">
+            <p class="kyc-label">Foto KTP kamu</p>
+            <div class="upload">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2.5" stroke="#9AA1A9" stroke-width="1.6"/><circle cx="8.5" cy="11" r="2.2" stroke="#9AA1A9" stroke-width="1.5"/><path d="M13 9.5h5M13 12.5h5M6.5 15.5h11" stroke="#9AA1A9" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <span class="utext">Tap untuk ambil foto KTP</span>
+            </div>
+            <div class="tipbox">
+              <span class="tip-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4" stroke="#1A9BE8" stroke-width="1.7" stroke-linecap="round"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2h5c0-.8.4-1.5 1-2A6 6 0 0 0 12 3Z" stroke="#1A9BE8" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+              <p>Pastikan tulisan di KTP terbaca jelas dan tidak ada bayangan.</p>
+            </div>
+
+            <p class="kyc-label sp">Foto selfie sambil pegang KTP</p>
+            <div class="upload">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M4 8.5h3l1.4-2h7.2L17 8.5h3a1.5 1.5 0 0 1 1.5 1.5v7A1.5 1.5 0 0 1 20 18.5H4A1.5 1.5 0 0 1 2.5 17v-7A1.5 1.5 0 0 1 4 8.5Z" stroke="#9AA1A9" stroke-width="1.5" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.2" stroke="#9AA1A9" stroke-width="1.5"/></svg>
+              <span class="utext">Tap untuk ambil selfie</span>
+            </div>
+            <div class="tipbox">
+              <span class="tip-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4" stroke="#1A9BE8" stroke-width="1.7" stroke-linecap="round"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2h5c0-.8.4-1.5 1-2A6 6 0 0 0 12 3Z" stroke="#1A9BE8" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+              <p>Pastikan wajah dan KTP terlihat jelas dalam satu foto.</p>
+            </div>
+
+            <div class="btn-stack">
+              <button class="btn btn-primary">Selesaikan Pendaftaran</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="#1A9BE8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Panduan visual di tiap step KYC, tanpa OTP karena sudah verified dari akun DANA</div>
+      <button class="dl-btn" data-dl>Download PNG</button>
+    </div>
+
+    <!-- ============ SCREEN 8 — SELESAI & AKTIF ============ -->
+    <div class="frame">
+      <div class="label">Screen 8 <span>— Selesai &amp; Aktif</span></div>
+      <div class="device" data-screen-label="Screen 8 — Selesai" data-export="QRISin-Saja-Screen-8-Selesai">
+        <div class="screen">
+          <div class="topbar">
+            <div class="statusbar"><span>9:41</span><span class="icons" data-statusicons></span></div>
+          </div>
+          <div class="success-hero">
+            <div class="check-badge">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#1A9BE8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h2 class="success-h">Selamat! Warungmu sudah bisa terima pembayaran non tunai</h2>
+            <p class="success-sub">QRIS kamu sudah aktif dan siap dipakai.</p>
+          </div>
+          <div class="body">
+            <div class="reward-card">
+              <div class="rc-ico"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#FBC02D"/><text x="12" y="15.8" text-anchor="middle" font-size="9.5" font-weight="800" fill="#7A5200" font-family="'Plus Jakarta Sans',sans-serif">Rp</text></svg></div>
+              <div>
+                <div class="rc-label">Reward masuk ke saldo DANA</div>
+                <div class="rc-val">Rp15.000</div>
+                <div class="rc-sub">dari program DANA QRISin Saja</div>
+              </div>
+            </div>
+
+            <div class="qris-card">
+              <div class="qc-label">QRIS kamu sudah siap</div>
+              <div class="qc-box"><canvas data-qr width="320" height="320"></canvas></div>
+              <div class="qc-name">Warung Bu Sari</div>
+            </div>
+
+            <div class="next-card">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M7 4h10v3.5a5 5 0 0 1-10 0V4Z" fill="#1A9BE8"/><path d="M7 5.2H4.6a2.4 2.4 0 0 0 2.6 2.4M17 5.2h2.4a2.4 2.4 0 0 1-2.6 2.4" stroke="#1A9BE8" stroke-width="1.5" stroke-linecap="round"/><path d="M12 12.5v3" stroke="#1A9BE8" stroke-width="2" stroke-linecap="round"/><path d="M8.8 19h6.4l-.7-2.6H9.5L8.8 19Z" fill="#1A9BE8"/></svg>
+              <div class="nc-text">Selesaikan 3 transaksi untuk dapat reward tambahan</div>
+              <div class="nc-val">+Rp25.000</div>
+            </div>
+
+            <div class="btn-stack">
+              <button class="btn btn-primary">Lihat QRIS Saya</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="#1A9BE8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>QRIS aktif + reward masuk langsung, ada motivasi untuk lanjut bertransaksi</div>
+      <button class="dl-btn" data-dl>Download PNG</button>
+    </div>
+
+  </div>
+
+  <div style="text-align:center;">
+    <button class="dl-all" data-dl-all>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v11m0 0l-4-4m4 4l4-4" stroke="#1A9BE8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="#1A9BE8" stroke-width="2" stroke-linecap="round"/></svg>
+      Download semua PNG
+    </button>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<script>
+  // ---- status bar icons (signal / wifi / battery) ----
+  const statusSVG = `
+    <svg width="18" height="11" viewBox="0 0 18 11" fill="#fff"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="4.5" width="3" height="6.5" rx="1"/><rect x="10" y="2" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg>
+    <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><path d="M8.5 10.5l7-7A9.9 9.9 0 0 0 1.5 3.5l7 7Z" fill="#fff" opacity=".0"/><path d="M1.5 3.5A9.9 9.9 0 0 1 15.5 3.5" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/><path d="M4 6A6.3 6.3 0 0 1 13 6" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/><path d="M6.6 8.5a2.7 2.7 0 0 1 3.8 0" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/><circle cx="8.5" cy="10.4" r="1" fill="#fff"/></svg>
+    <svg width="26" height="13" viewBox="0 0 26 13" fill="none"><rect x="1" y="1.5" width="21" height="10" rx="3" stroke="#fff" stroke-width="1.4" opacity=".55"/><rect x="3" y="3.5" width="16" height="6" rx="1.5" fill="#fff"/><rect x="23.5" y="4.5" width="1.8" height="4" rx=".9" fill="#fff" opacity=".55"/></svg>`;
+  document.querySelectorAll('[data-statusicons]').forEach(el=>el.innerHTML=statusSVG);
+
+  // ---- back arrow ----
+  const backSVG = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  document.querySelectorAll('[data-back]').forEach(el=>el.innerHTML=backSVG);
+
+  // ---- share button icons ----
+  const icoWA = `<svg width="22" height="22" viewBox="0 0 24 24" fill="#1A9BE8"><path d="M12 2.2A9.6 9.6 0 0 0 3.9 16.8L2.6 21.4l4.7-1.2A9.6 9.6 0 1 0 12 2.2Zm0 1.7a7.9 7.9 0 0 1 6.4 12.5 7.9 7.9 0 0 1-9.9 2.5l-.4-.2-2.8.7.7-2.7-.2-.4A7.9 7.9 0 0 1 12 3.9Zm-2.7 3.4c-.2 0-.5 0-.7.4-.3.3-1 1-1 2.4s1 2.8 1.2 3 2 3.1 4.9 4.3c2.4 1 2.9.8 3.4.8.5 0 1.6-.7 1.9-1.3.2-.7.2-1.2.1-1.3l-.6-.3-1.6-.8c-.2-.1-.4-.1-.6.1l-.8 1c-.2.2-.3.2-.6.1a6.5 6.5 0 0 1-1.9-1.2 7.3 7.3 0 0 1-1.3-1.7c-.1-.2 0-.4.1-.5l.5-.5.3-.6c.1-.2 0-.4 0-.5l-.8-2c-.2-.5-.4-.4-.6-.4h-.6Z"/></svg>`;
+  const icoQR = `<svg width="22" height="22" viewBox="0 0 24 24" fill="#1A9BE8"><path d="M3 3h7v7H3V3Zm2 2v3h3V5H5Zm9-2h7v7h-7V3Zm2 2v3h3V5h-3ZM3 14h7v7H3v-7Zm2 2v3h3v-3H5Zm9 0h2v2h-2v-2Zm2 2h2v2h-2v-2Zm2-2h2v2h-2v-2Zm0 4h2v1h-2v-1Zm-4 0h2v1h-2v-1Zm2-6h2v2h-2v-2Z"/></svg>`;
+  document.querySelectorAll('[data-ico="wa"]').forEach(el=>el.innerHTML=icoWA);
+  document.querySelectorAll('[data-ico="qr"]').forEach(el=>el.innerHTML=icoQR);
+
+  // ---- whatsapp avatar (simple person silhouette) ----
+  const avatarSVG = `<svg width="34" height="34" viewBox="0 0 34 34"><rect width="34" height="34" fill="#B7C2C0"/><circle cx="17" cy="13" r="6" fill="#fff"/><path d="M5 33c0-7 5.4-11 12-11s12 4 12 11" fill="#fff"/></svg>`;
+  document.querySelectorAll('[data-avatar]').forEach(el=>el.innerHTML=avatarSVG);
+
+  // ---- realistic QR placeholder generator ----
+  function drawQR(canvas){
+    const ctx = canvas.getContext('2d');
+    const N = 29;                 // modules
+    const size = canvas.width;
+    const cell = size / N;
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0,0,size,size);
+    ctx.fillStyle = '#0B0E11';
+
+    // seeded pseudo-random so pattern is stable
+    let seed = 20260605;
+    const rnd = ()=>{ seed = (seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; };
+
+    const isFinder = (r,c)=>{
+      const inBox=(R,C)=> r>=R&&r<R+7&&c>=C&&c<C+7;
+      return inBox(0,0)||inBox(0,N-7)||inBox(N-7,0);
+    };
+    // data modules
+    for(let r=0;r<N;r++){
+      for(let c=0;c<N;c++){
+        if(isFinder(r,c)) continue;
+        if(rnd()>0.5) ctx.fillRect(Math.round(c*cell),Math.round(r*cell),Math.ceil(cell),Math.ceil(cell));
+      }
+    }
+    // finder patterns (3 corners)
+    const finder=(R,C)=>{
+      ctx.fillStyle='#0B0E11';
+      ctx.fillRect(C*cell,R*cell,7*cell,7*cell);
+      ctx.fillStyle='#fff';
+      ctx.fillRect((C+1)*cell,(R+1)*cell,5*cell,5*cell);
+      ctx.fillStyle='#0B0E11';
+      ctx.fillRect((C+2)*cell,(R+2)*cell,3*cell,3*cell);
+    };
+    finder(0,0); finder(0,N-7); finder(N-7,0);
+
+    // small center logo knockout (brand dot)
+    const lg = 6*cell, off=(size-lg)/2;
+    ctx.fillStyle='#fff';
+    ctx.fillRect(off-2,off-2,lg+4,lg+4);
+    ctx.fillStyle='#1A9BE8';
+    const rr=(x,y,w,h,r)=>{ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fill();};
+    rr(off,off,lg,lg,cell*1.4);
+  }
+  document.querySelectorAll('[data-qr]').forEach(drawQR);
+
+  // ---- PNG export per screen ----
+  async function exportDevice(device, filename, btn){
+    const label = btn ? btn.textContent : '';
+    if(btn){ btn.disabled = true; btn.textContent = 'Menyiapkan…'; }
+    try{
+      // capture with a little breathing room so the device shadow/rounding isn't clipped
+      const dataUrl = await htmlToImage.toPng(device, {
+        pixelRatio: 3,
+        backgroundColor: '#EDEFF2',
+        style:{ margin:'0' },
+        // pad the capture canvas a touch around the device
+        width: device.offsetWidth + 48,
+        height: device.offsetHeight + 48,
+        canvasWidth: (device.offsetWidth + 48),
+        canvasHeight: (device.offsetHeight + 48),
+      });
+      const a = document.createElement('a');
+      a.href = dataUrl; a.download = filename + '.png';
+      a.click();
+    }catch(e){ console.error(e); alert('Gagal export: '+e.message); }
+    if(btn){ btn.disabled = false; btn.textContent = label; }
+  }
+
+  document.querySelectorAll('[data-dl]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const device = btn.closest('.frame').querySelector('.device');
+      exportDevice(device, device.dataset.export, btn);
+    });
+  });
+
+  const allBtn = document.querySelector('[data-dl-all]');
+  if(allBtn){
+    allBtn.addEventListener('click', async ()=>{
+      const devices = [...document.querySelectorAll('.device')];
+      allBtn.disabled = true;
+      const orig = allBtn.innerHTML;
+      for(let i=0;i<devices.length;i++){
+        allBtn.textContent = 'Export '+(i+1)+'/'+devices.length+'…';
+        await exportDevice(devices[i], devices[i].dataset.export, null);
+        await new Promise(r=>setTimeout(r, 400));
+      }
+      allBtn.disabled = false; allBtn.innerHTML = orig;
+    });
+  }
+</script>
+</body>
+</html>
