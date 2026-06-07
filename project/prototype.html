@@ -604,21 +604,108 @@ html,body{
         <div class="qr-box">
           <canvas id="qr-canvas" width="320" height="320"></canvas>
         </div>
-        <div class="qr-code">RINA123</div>
+        <div class="qr-code" id="qr-code-label">RINA123</div>
         <p class="qr-note">Kode unik milik kamu, <b>berlaku 30 hari</b></p>
         <div class="btn-stack" style="width:100%">
           <button class="btn btn-p">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v11m0 0l-4-4m4 4l4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
             Simpan ke Galeri
           </button>
-          <button class="btn btn-o">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 8V4h10v4" stroke="#1A9BE8" stroke-width="1.9" stroke-linejoin="round"/><rect x="4" y="8" width="16" height="9" rx="2" stroke="#1A9BE8" stroke-width="1.9"/><rect x="7.5" y="14" width="9" height="6" rx="1" stroke="#1A9BE8" stroke-width="1.9"/><circle cx="16.5" cy="11" r="1" fill="#1A9BE8"/></svg>
-            Cetak QR Code
+          <button class="btn btn-o" id="btn-scan-demo" style="display:none;" onclick="showBudiTransition()">
+            👆 Pak Eko sudah scan QR → Lanjut
           </button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- ════════════════════════════
+       SB-TRANSIT — TRANSISI PAK BUDI → PAK EKO
+  ════════════════════════════ -->
+  <div class="screen hidden-right" id="sb-transit">
+    <div style="width:100%;height:100%;background:#0D1117;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:32px 20px;box-sizing:border-box;">
+
+      <!-- Header -->
+      <div style="text-align:center;margin-bottom:36px;">
+        <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.08em;margin-bottom:10px;">APA YANG TERJADI SELANJUTNYA</div>
+        <div style="font-size:20px;font-weight:800;color:#fff;line-height:1.35;">Pak Eko scan QR →<br>Download DANA</div>
+      </div>
+
+      <!-- Two phones side by side -->
+      <div style="display:flex;align-items:center;gap:20px;margin-bottom:36px;">
+
+        <!-- Pak Budi phone -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <div style="font-size:11px;font-weight:700;color:rgba(255,165,0,.8);letter-spacing:.06em;">PAK BUDI</div>
+          <div style="width:130px;height:220px;background:#1A1D22;border:2px solid #404448;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;gap:8px;">
+            <div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:600;">QR Referral</div>
+            <div style="width:80px;height:80px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <rect x="4" y="4" width="24" height="24" rx="3" fill="#1A1D1F"/>
+                <rect x="8" y="8" width="16" height="16" rx="1.5" fill="#fff"/>
+                <rect x="10" y="10" width="12" height="12" rx="1" fill="#1A1D1F"/>
+                <rect x="36" y="4" width="24" height="24" rx="3" fill="#1A1D1F"/>
+                <rect x="40" y="8" width="16" height="16" rx="1.5" fill="#fff"/>
+                <rect x="42" y="10" width="12" height="12" rx="1" fill="#1A1D1F"/>
+                <rect x="4" y="36" width="24" height="24" rx="3" fill="#1A1D1F"/>
+                <rect x="8" y="40" width="16" height="16" rx="1.5" fill="#fff"/>
+                <rect x="10" y="42" width="12" height="12" rx="1" fill="#1A1D1F"/>
+                <rect x="36" y="36" width="8" height="8" rx="1" fill="#1A1D1F"/>
+                <rect x="48" y="36" width="8" height="8" rx="1" fill="#1A1D1F"/>
+                <rect x="36" y="48" width="8" height="8" rx="1" fill="#1A1D1F"/>
+                <rect x="48" y="48" width="8" height="8" rx="1" fill="#1A1D1F"/>
+                <rect x="42" y="42" width="8" height="8" rx="1" fill="#1A9BE8"/>
+              </svg>
+            </div>
+            <div style="font-size:9px;color:rgba(255,255,255,.4);font-weight:600;">BUDI123</div>
+          </div>
+        </div>
+
+        <!-- Arrow scan -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="font-size:24px;animation:pulse-arrow 1.2s infinite;">📷</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:600;text-align:center;">scan</div>
+          <svg width="40" height="16" viewBox="0 0 40 16" fill="none"><path d="M2 8h32m0 0l-6-5m6 5l-6 5" stroke="#1A9BE8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <!-- Pak Eko phone -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+          <div style="font-size:11px;font-weight:700;color:rgba(155,100,255,.8);letter-spacing:.06em;">PAK EKO</div>
+          <div style="width:130px;height:220px;background:#1A1D22;border:2px solid #404448;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;gap:6px;">
+            <!-- Play Store icon -->
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#00C853,#1565C0);display:flex;align-items:center;justify-content:center;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 3.5l14 8.5-14 8.5V3.5z" fill="#fff"/></svg>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);font-weight:700;">Play Store</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.4);text-align:center;font-weight:500;">Download DANA</div>
+            <div style="background:#1A9BE8;border-radius:6px;padding:4px 12px;">
+              <div style="font-size:10px;color:#fff;font-weight:700;">Install</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Steps -->
+      <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;margin-bottom:32px;">
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;">
+          <span style="font-size:16px;">📱</span>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.8);">Pak Eko scan QR code Pak Budi</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;">
+          <span style="font-size:16px;">⬇️</span>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.8);">Diarahkan ke Play Store → Install DANA</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;">
+          <span style="font-size:16px;">📋</span>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.8);">Pak Eko daftar DANA Bisnis dalam 5 menit</span>
+        </div>
+      </div>
+
+      <button onclick="goTo('sb1');setTimeout(()=>updatePOV('sb1'),100);" style="background:#1A9BE8;border:none;border-radius:14px;padding:16px 32px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;width:100%;max-width:300px;">
+        Lihat dari perspektif Pak Eko →
+      </button>
+    </div>
+  </div><!-- /sb-transit -->
 
   <!-- ════════════════════════════
        S3 — TRACKING
@@ -1744,11 +1831,144 @@ html,body{
   </div>
 </div>
 
+<!-- ════ QR SCAN TRANSIT OVERLAY (Pak Budi → Pak Eko) ════ -->
+<div id="qr-transit-overlay" onclick="proceedToPlayStore()" style="
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(10,12,14,.96);
+  backdrop-filter:blur(8px);
+  flex-direction:column;
+  align-items:center;justify-content:center;
+  z-index:999;
+  cursor:pointer;
+  transition:opacity .35s ease;
+">
+  <!-- label atas -->
+  <div style="text-align:center;margin-bottom:32px;">
+    <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;margin-bottom:8px;">APA YANG TERJADI</div>
+    <div style="font-size:20px;font-weight:800;color:#fff;">Pak Eko scan QR dari Pak Budi</div>
+  </div>
+
+  <!-- two phone cards -->
+  <div style="display:flex;align-items:center;gap:24px;margin-bottom:36px;">
+
+    <!-- Pak Budi card: showing QR -->
+    <div class="qr-step1" style="opacity:0;transition:opacity .5s ease;text-align:center;">
+      <div style="width:220px;height:370px;background:#18191C;border-radius:30px;border:2px solid #FF9800;overflow:hidden;box-shadow:0 32px 60px -16px rgba(255,152,0,.4);display:flex;flex-direction:column;">
+        <!-- topbar -->
+        <div style="background:#1A9BE8;padding:10px 14px 8px;flex:none;">
+          <div style="font-size:9px;font-weight:800;color:#fff;text-align:center;letter-spacing:.04em;">QR Code Referral</div>
+        </div>
+        <!-- content -->
+        <div style="flex:1;background:#fff;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+          <div style="font-size:8px;color:#999;font-weight:600;">Tunjukkan ke pedagang</div>
+          <!-- QR illustration -->
+          <div style="width:110px;height:110px;background:#fff;border:2px solid #1A9BE8;border-radius:10px;padding:8px;display:flex;align-items:center;justify-content:center;">
+            <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+              <!-- TL finder -->
+              <rect x="4" y="4" width="30" height="30" rx="4" fill="#1A1D1F"/>
+              <rect x="8" y="8" width="22" height="22" rx="2" fill="#fff"/>
+              <rect x="11" y="11" width="16" height="16" rx="1" fill="#1A1D1F"/>
+              <!-- TR finder -->
+              <rect x="56" y="4" width="30" height="30" rx="4" fill="#1A1D1F"/>
+              <rect x="60" y="8" width="22" height="22" rx="2" fill="#fff"/>
+              <rect x="63" y="11" width="16" height="16" rx="1" fill="#1A1D1F"/>
+              <!-- BL finder -->
+              <rect x="4" y="56" width="30" height="30" rx="4" fill="#1A1D1F"/>
+              <rect x="8" y="60" width="22" height="22" rx="2" fill="#fff"/>
+              <rect x="11" y="63" width="16" height="16" rx="1" fill="#1A1D1F"/>
+              <!-- data dots -->
+              <rect x="40" y="40" width="6" height="6" rx="1" fill="#1A9BE8"/>
+              <rect x="50" y="40" width="6" height="6" rx="1" fill="#1A1D1F"/>
+              <rect x="60" y="40" width="6" height="6" rx="1" fill="#1A1D1F"/>
+              <rect x="40" y="50" width="6" height="6" rx="1" fill="#1A1D1F"/>
+              <rect x="50" y="50" width="6" height="6" rx="1" fill="#1A9BE8"/>
+              <rect x="70" y="50" width="6" height="6" rx="1" fill="#1A1D1F"/>
+              <rect x="60" y="60" width="6" height="6" rx="1" fill="#1A9BE8"/>
+              <rect x="70" y="60" width="6" height="6" rx="1" fill="#1A1D1F"/>
+              <rect x="40" y="70" width="6" height="6" rx="1" fill="#1A1D1F"/>
+              <rect x="50" y="70" width="6" height="6" rx="1" fill="#1A9BE8"/>
+              <rect x="70" y="70" width="6" height="6" rx="1" fill="#1A1D1F"/>
+            </svg>
+          </div>
+          <div style="font-size:9px;font-weight:800;color:#1A1D1F;letter-spacing:.1em;">BUDI123</div>
+          <div style="font-size:7px;color:#999;font-weight:500;">berlaku 30 hari</div>
+        </div>
+      </div>
+      <div style="margin-top:14px;font-size:18px;font-weight:800;color:#fff;">🏪 Pak Budi</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:4px;font-weight:500;">menampilkan QR code</div>
+    </div>
+
+    <!-- animated scan arrow -->
+    <div class="qr-arrow" style="opacity:0;transition:opacity .5s ease;display:flex;flex-direction:column;align-items:center;gap:10px;">
+      <div style="font-size:22px;animation:blink 1s infinite;">📷</div>
+      <div style="display:flex;align-items:center;gap:0;">
+        <div style="width:80px;height:2px;background:linear-gradient(90deg,rgba(255,152,0,.2),rgba(255,152,0,.9));border-radius:99px;"></div>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#FF9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="position:relative;width:94px;height:2px;">
+        <div style="position:absolute;top:-4px;left:0;width:10px;height:10px;border-radius:50%;background:#FF9800;box-shadow:0 0 10px rgba(255,152,0,.7);animation:travel 1.4s ease-in-out infinite;"></div>
+      </div>
+      <div style="background:rgba(255,152,0,.15);border:1px solid rgba(255,152,0,.4);border-radius:99px;padding:5px 12px;">
+        <div style="font-size:10px;color:#FF9800;font-weight:700;letter-spacing:.04em;">SCAN QR</div>
+      </div>
+    </div>
+
+    <!-- Pak Eko card: camera scanning -->
+    <div class="qr-step2" style="opacity:0;transition:opacity .5s ease;text-align:center;">
+      <div style="width:220px;height:370px;background:#18191C;border-radius:30px;border:2px solid #9C27B0;overflow:hidden;box-shadow:0 32px 60px -16px rgba(156,39,176,.4);display:flex;flex-direction:column;">
+        <!-- camera viewfinder -->
+        <div style="flex:1;background:#0A0A0A;position:relative;display:flex;align-items:center;justify-content:center;">
+          <!-- camera feed simulation -->
+          <div style="width:140px;height:140px;position:relative;">
+            <!-- corner guides -->
+            <div style="position:absolute;top:0;left:0;width:22px;height:22px;border-top:3px solid #9C27B0;border-left:3px solid #9C27B0;border-radius:3px 0 0 0;"></div>
+            <div style="position:absolute;top:0;right:0;width:22px;height:22px;border-top:3px solid #9C27B0;border-right:3px solid #9C27B0;border-radius:0 3px 0 0;"></div>
+            <div style="position:absolute;bottom:0;left:0;width:22px;height:22px;border-bottom:3px solid #9C27B0;border-left:3px solid #9C27B0;border-radius:0 0 0 3px;"></div>
+            <div style="position:absolute;bottom:0;right:0;width:22px;height:22px;border-bottom:3px solid #9C27B0;border-right:3px solid #9C27B0;border-radius:0 0 3px 0;"></div>
+            <!-- scan line animation -->
+            <div style="position:absolute;left:4px;right:4px;height:2px;background:linear-gradient(90deg,transparent,#9C27B0,transparent);animation:scan-line 1.5s ease-in-out infinite;top:20px;"></div>
+            <!-- QR inside viewfinder (blurred/detected) -->
+            <div style="position:absolute;inset:18px;background:rgba(156,39,176,.08);border:1px solid rgba(156,39,176,.3);border-radius:4px;display:flex;align-items:center;justify-content:center;">
+              <div style="font-size:28px;opacity:.6;">⬛</div>
+            </div>
+          </div>
+          <!-- detected badge -->
+          <div class="qr-detected" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(156,39,176,.9);border-radius:20px;padding:5px 14px;opacity:0;transition:opacity .4s ease;">
+            <div style="font-size:10px;font-weight:700;color:#fff;white-space:nowrap;">✓ QR Terdeteksi!</div>
+          </div>
+        </div>
+        <!-- bottom bar -->
+        <div style="background:#111;padding:10px;text-align:center;">
+          <div style="font-size:8px;color:rgba(255,255,255,.5);font-weight:600;">Arahkan kamera ke QR code</div>
+        </div>
+      </div>
+      <div style="margin-top:14px;font-size:18px;font-weight:800;color:#fff;">🛒 Pak Eko</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:4px;font-weight:500;">scan QR → buka Play Store</div>
+    </div>
+
+  </div>
+
+  <!-- narasi -->
+  <div class="qr-step2" style="opacity:0;transition:opacity .5s ease;text-align:center;margin-bottom:28px;">
+    <div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">QR berhasil di-scan oleh Pak Eko!</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.5);font-weight:500;">Pak Eko diarahkan ke Play Store untuk download DANA</div>
+  </div>
+
+  <!-- tap hint -->
+  <div class="qr-tap" style="opacity:0;transition:opacity .4s ease;display:flex;align-items:center;gap:8px;">
+    <div style="width:8px;height:8px;border-radius:50%;background:#FF9800;opacity:.6;animation:blink 1.2s infinite;"></div>
+    <span style="font-size:12px;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:.06em;">TAP UNTUK LANJUT</span>
+  </div>
+</div>
+
 <style>
 @keyframes blink{0%,100%{opacity:.3}50%{opacity:.8}}
 @keyframes travel{0%{left:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{left:calc(100% - 10px);opacity:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes slide-down{from{transform:translateY(-80px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes scan-line{0%,100%{top:10px;opacity:0.3}50%{top:110px;opacity:1}}
+@keyframes pulse-arrow{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.15);opacity:1}}
 </style>
 
 <script>
@@ -1791,10 +2011,18 @@ drawQR(document.getElementById('qr-s8'));
 const POV = {
   s0:'hendra', s2:'hendra', s2a:'hendra', s2b:'hendra', s4:'hendra', s4push:'hendra',
   's-profile':'hendra', s3:'hendra',
-  'stransit':'transition',
+  'stransit':'transition', 'sb-transit':'qr-transition',
   swa:'busari', s5:'busari', s6:'busari', s7:'busari', sloading:'busari', s8:'busari',
-  sb0:'budi', sb1:'eko', sb2:'eko', sb3:'eko', sb4:'eko', sb5:'eko', 'sb-loading':'eko', sb6:'eko'
+  sb1:'eko', sb2:'eko', sb3:'eko', sb4:'eko', sb5:'eko', 'sb-loading':'eko', sb6:'eko'
 };
+
+// Override POV for shared screens based on current flow
+function getPOV(id){
+  if(currentFlow === 'budi' && (id === 's0' || id === 's2' || id === 's2b')){
+    return 'budi';
+  }
+  return POV[id] || 'hendra';
+}
 
 // ── flow tracking ──
 let currentFlow = 'rina';
@@ -1826,7 +2054,7 @@ function updateRinaHint(id){
 }
 
 function updatePOV(id){
-  const pov = POV[id] || 'hendra';
+  const pov = getPOV(id);
   const chip = document.getElementById('pov-chip');
   const dot  = document.getElementById('pov-dot');
   const txt  = document.getElementById('pov-text');
@@ -1841,6 +2069,9 @@ function updatePOV(id){
   } else if(pov === 'transition'){
     txt.textContent      = '✉️ Pesan dalam perjalanan…';
     dot.style.background = '#FFC107';
+  } else if(pov === 'qr-transition'){
+    txt.textContent      = '📷 QR dalam perjalanan…';
+    dot.style.background = '#FF9800';
   } else if(pov === 'budi'){
     txt.textContent      = '🏪 Perspektif Pak Budi';
     dot.style.background = '#FF9800';
@@ -1887,6 +2118,15 @@ function goTo(id){
   stack.push(id);
   updatePOV(id);
   updateRinaHint(id);
+  // Show scan button on s2b when in budi flow
+  if(id === 's2b' && currentFlow === 'budi'){
+    setTimeout(()=>{
+      const btn = document.getElementById('btn-scan-demo');
+      if(btn) btn.style.display = 'flex';
+      const lbl = document.getElementById('qr-code-label');
+      if(lbl) lbl.textContent = 'BUDI123';
+    }, 300);
+  }
 }
 
 function goBack(){
@@ -2084,6 +2324,39 @@ function proceedToWA(){
 }
 
 // ── flow selector ──
+function showBudiTransition(){
+  const overlay = document.getElementById('qr-transit-overlay');
+  overlay.style.display = 'flex';
+  // reset
+  overlay.querySelector('.qr-step1').style.opacity = '0';
+  overlay.querySelector('.qr-arrow').style.opacity = '0';
+  const step2s = overlay.querySelectorAll('.qr-step2');
+  step2s.forEach(el => el.style.opacity = '0');
+  overlay.querySelector('.qr-tap').style.opacity = '0';
+  const detected = overlay.querySelector('.qr-detected');
+  if(detected) detected.style.opacity = '0';
+
+  updatePOV('sb-transit');
+
+  // staggered reveal
+  setTimeout(()=>{ overlay.querySelector('.qr-step1').style.opacity='1'; }, 200);
+  setTimeout(()=>{ overlay.querySelector('.qr-arrow').style.opacity='1'; }, 700);
+  setTimeout(()=>{ step2s.forEach(el=>el.style.opacity='1'); }, 1300);
+  setTimeout(()=>{ if(detected) detected.style.opacity='1'; }, 2200);
+  setTimeout(()=>{ overlay.querySelector('.qr-tap').style.opacity='1'; }, 2800);
+}
+
+function proceedToPlayStore(){
+  const overlay = document.getElementById('qr-transit-overlay');
+  overlay.style.opacity = '0';
+  setTimeout(()=>{
+    overlay.style.display = 'none';
+    overlay.style.opacity = '1';
+    jumpTo('sb1');
+    setTimeout(()=>{ updatePOV('sb1'); }, 100);
+  }, 350);
+}
+
 function switchFlow(flowName){
   currentFlow = flowName;
   // update button states
@@ -2100,8 +2373,26 @@ function switchFlow(flowName){
   document.getElementById('btn-flow-profile').style.borderColor = flowName === 'profile' ? '#1A9BE8' : 'rgba(26,155,232,.3)';
 
   // navigate
-  if(flowName === 'rina') jumpTo('s0');
-  else if(flowName === 'budi') jumpTo('sb0');
+  if(flowName === 'rina'){
+    jumpTo('s0');
+    // Reset QR screen untuk Rina
+    setTimeout(()=>{
+      const lbl = document.getElementById('qr-code-label');
+      if(lbl) lbl.textContent = 'RINA123';
+      const btn = document.getElementById('btn-scan-demo');
+      if(btn) btn.style.display = 'none';
+    }, 100);
+  }
+  else if(flowName === 'budi'){
+    jumpTo('s0');
+    // Update QR screen untuk Pak Budi
+    setTimeout(() => {
+      const lbl = document.getElementById('qr-code-label');
+      if(lbl) lbl.textContent = 'BUDI123';
+      const btn = document.getElementById('btn-scan-demo');
+      if(btn) btn.style.display = 'flex';
+    }, 100);
+  }
   else if(flowName === 'profile') jumpTo('s-profile');
 }
 
