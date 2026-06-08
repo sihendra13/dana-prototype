@@ -2162,8 +2162,11 @@ function updatePOV(id){
   } else if(pov === 'eko'){
     txt.textContent      = '🛒 Perspektif Pak Eko';
     dot.style.background = '#9C27B0';
+  } else if(currentFlow === 'budi'){
+    txt.textContent      = '🏪 Perspektif Pak Budi';
+    dot.style.background = '#FF9800';
   } else {
-    txt.textContent      = '📱 Perspektif Rina/Pak Budi';
+    txt.textContent      = '📱 Perspektif Rina';
     dot.style.background = '#1A9BE8';
   }
 }
